@@ -32,6 +32,6 @@ This project is a team project on capstone design within the server programming 
 + Composition:
     + chiho0270: Leader/back
     + skh: PPT/front
-    + Shin Ju-an: Research/front
+    + juahn112: Research/front
     + vpsxja3269: Research/DB
     + SangEunHong: PT/back
