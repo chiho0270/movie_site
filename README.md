@@ -21,6 +21,8 @@
   + DB: Amazon RDS (PostgreSQL)
   + API 연동: TMDB API
   + 배포 인프라: AWS
+  + F-B: RESTful + axios
+  + B-D: RESTful
 
 ## 실행 방법
 + 아직 없음
