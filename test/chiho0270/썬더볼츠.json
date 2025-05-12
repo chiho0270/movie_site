@@ -1,0 +1,77 @@
+{
+    "adult": false,
+    "backdrop_path": "/rthMuZfFv4fqEU4JVbgSW9wQ8rs.jpg",
+    "belongs_to_collection": null,
+    "budget": 180000000,
+    "genres": [
+        {
+            "id": 28,
+            "name": "액션"
+        },
+        {
+            "id": 878,
+            "name": "SF"
+        },
+        {
+            "id": 12,
+            "name": "모험"
+        }
+    ],
+    "homepage": "",
+    "id": 986056,
+    "imdb_id": "tt20969586",
+    "origin_country": [
+        "US"
+    ],
+    "original_language": "en",
+    "original_title": "Thunderbolts*",
+    "overview": "어벤져스가 사라진 후, 세계 최대의 위협과 마주한 세상을 구하기 위해 전직 스파이, 암살자, 살인 청부 업자 등 마블의 별난 놈들이 펼치는 예측불허 팀플레이를 담은 액션 블록버스터",
+    "popularity": 378.7319,
+    "poster_path": "/1lI4iDsaVnOnnZPI9igWkL8jHPL.jpg",
+    "production_companies": [
+        {
+            "id": 420,
+            "logo_path": "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png",
+            "name": "Marvel Studios",
+            "origin_country": "US"
+        },
+        {
+            "id": 176762,
+            "logo_path": null,
+            "name": "Kevin Feige Productions",
+            "origin_country": "US"
+        }
+    ],
+    "production_countries": [
+        {
+            "iso_3166_1": "US",
+            "name": "United States of America"
+        }
+    ],
+    "release_date": "2025-04-30",
+    "revenue": 272154195,
+    "runtime": 127,
+    "spoken_languages": [
+        {
+            "english_name": "English",
+            "iso_639_1": "en",
+            "name": "English"
+        },
+        {
+            "english_name": "Italian",
+            "iso_639_1": "it",
+            "name": "Italiano"
+        },
+        {
+            "english_name": "Russian",
+            "iso_639_1": "ru",
+            "name": "Pусский"
+        }
+    ],
+    "status": "Released",
+    "tagline": "누구와 팀이 될지 신중할 것",
+    "title": "썬더볼츠*",
+    "video": false,
+    "vote_average": 7.5,
+    "vote_count": 752
+}
