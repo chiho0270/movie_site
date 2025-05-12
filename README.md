@@ -11,14 +11,19 @@
     + 홍상은: 발표/백
 ### 개요
 + 과제명: 영화 평론사이트 제작 및 운영
-+ 목적:
-+ 필요성:
-+ 구성:
++ 사이트명: 무비평
++ 목적: 영화에 대한 객관적인 평론 및 평점의 플랫폼 제작
++ 필요성: 코로나 팬데믹 이후 절감된 국내 영화 시장의 홍보 및 관객들의 객관적인 지표 제공
 ### 상세
-+ 구성
-+ 진행방식
++ 개발환경
+  + Front-end: React
+  + Back-end: FastAPI
+  + DB: Amazon RDS (PostgreSQL)
+  + API 연동: TMDB API
+  + 배포 인프라: AWS
 
 ## 실행 방법
++ 아직 없음
 
 # EN
 This project is a team project on capstone design within the server programming course at DCU.
