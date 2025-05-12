@@ -16,11 +16,11 @@
 + 필요성: 코로나 팬데믹 이후 절감된 국내 영화 시장의 홍보 및 관객들의 객관적인 지표 제공
 ### 상세
 + 개발환경
-+ + + Front-end: React
-    + Back-end: FastAPI
-    + DB: Amazon RDS (PostgreSQL)
-    + API 연동: TMDB API
-    + 배포 인프라: AWS
+  + Front-end: React
+  + Back-end: FastAPI
+  + DB: Amazon RDS (PostgreSQL)
+  + API 연동: TMDB API
+  + 배포 인프라: AWS
 
 ## 실행 방법
 + 아직 없음
