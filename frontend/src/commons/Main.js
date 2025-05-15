@@ -5,8 +5,9 @@ import TagList from "../components/TagList";
 function MainPage() {
     return (
         <div>
+            <h2>추천 영화</h2>
             <TagList />
-            <MovieSection title="추천 영화" />
+            <MovieSection />
         </div>
     );
 };
