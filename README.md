@@ -17,12 +17,11 @@
 ### 상세
 + 개발환경
   + Front-end: React
-  + Back-end: FastAPI
-  + DB: Amazon RDS (PostgreSQL)
+  + Back-end: Node.js
+  + DB: Amazon RDS (MySQL)
   + API 연동: TMDB API
   + 배포 인프라: AWS
-  + F-B: RESTful + axios
-  + B-D: RESTful
+  + Front-Back: axios
 
 ## 실행 방법
 + 아직 없음
