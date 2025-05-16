@@ -4,7 +4,7 @@ import MoviePoster from "./MoviePoster";
 const MovieSection = ({movies}) => {
     return(
         <section className="my-8">
-            <div className="flex space-x-4 overflow-x-scroll">
+            <div className="flex space-x-4 overflow-x-auto whitespace-nowrap px-2">
                 {movies.map((movie) => (
                     <MoviePoster
                     key={movie.id}
