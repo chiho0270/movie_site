@@ -35,13 +35,13 @@
 import React from "react";
 import MovieSection from "../components/MovieSection";
 import TagList from "../components/TagList";
+import exampleMovies from "../DummyData";
 
 function MainPage() {
     return (
         <div>
-            <h2>추천 영화</h2>
-            <TagList />
-            <MovieSection />
+            <h2>인기 영화</h2>
+            <MovieSection movies={exampleMovies}/>
         </div>
     );
 };
