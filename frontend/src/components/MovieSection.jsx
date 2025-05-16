@@ -1,11 +1,10 @@
 import React from "react";
 import MoviePoster from "./MoviePoster";
 
-const MovieSection = ({ title, movies}) => {
+const MovieSection = ({movies}) => {
     return(
         <section className="my-8">
-            <h2 className="text-xl font-bold mb-4">{title}</h2>
-            <div className="flex space-x-4 overflow-x-scroll">
+            <div className="flex space-x-4 overflow-x-auto whitespace-nowrap px-2">
                 {movies.map((movie) => (
                     <MoviePoster
                     key={movie.id}
