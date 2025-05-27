@@ -1,0 +1,261 @@
+<html>
+    <head>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                box-sizing: border-box;
+            }
+            
+            div.top {
+                background-color: rgb(128, 128, 128);
+                margin: 0;
+                display: flex;
+                justify-content: end;   
+                align-items: center;       
+                height: 50px;
+                width: 100%;
+
+            }
+            .top a{
+                margin-right: auto;
+                margin-left: 20px;
+                align-items: center;
+                text-decoration: none;
+                color: red;
+                font-weight: bold;
+                font-size: 40px;
+            }
+            .top *{
+                margin-right: 15px;
+            }
+            .top input {
+                height: 70%;
+                width: 200px;
+                border-radius: 10px;
+            }
+            img.post {
+                width: 100%;
+                height: 100%;
+                display: inline;
+            }
+            
+            .bottom {
+                background-color: beige;
+                height: auto;
+                display: grid;
+                padding: 20px;
+                grid-template-columns: 400px 1fr;
+                grid-template-rows: 500px 500px ;
+                grid-gap: 20px;
+            }
+            .bottom *{
+                background-color: yellow;
+            }
+            .item2 {
+                display: grid;
+                grid-template-rows: 2fr 3fr 5fr ;
+                grid-gap: 10px;
+            }
+            div.item2 *{
+                background-color: blueviolet;
+                display: flex;
+            }
+            .item3 {
+                padding: 10px;
+            }
+            .item3 h1{
+                margin: 0;
+            }
+            
+            .item3 img{
+                height: 100px;
+                width: 100px;
+            }
+            .person-img {
+                background-color: white;
+                display: grid;
+                height: 80%;
+                padding: 20px;
+                grid-template-columns: repeat(3,100px);
+                grid-template-rows: repeat(2,180px);
+                grid-gap: 10px;
+                border: 2px solid;
+            }
+            .person-img p{
+                margin-top: 0;
+            }
+            .item4 {
+                display: grid;
+                grid-template-columns: 1fr 1fr ;
+                grid-gap: 10px;
+            }
+            .item4 * {
+                background-color: coral;
+                display: flex;
+            }
+            .item5 img {
+                height: 100%;
+                width: 100px;
+            }
+            .item5 h1 {
+                display: inline;
+                background-color: yellow;
+                justify-content: center;    
+                align-items: center;
+                margin-left: 10px;
+            }
+            .score {
+                position: relative;
+                height: 100%;
+                font-size: 70px;
+                margin-left: 10px;
+            }
+            .star {
+                position: absolute;
+                width: 50%;   /*평균 평점 맞춰서 조절*/
+                overflow: hidden;
+                color: yellow;
+                text-shadow: 2px 2px 3px black;
+            }
+            .item6 input {
+                background-color: white;
+                outline: none;
+                height: 100%;
+                width: 90%;
+            }
+            .item6 button {
+                background-color: white;
+                justify-content: center;    
+                align-items: center;
+                width: 10%;
+            }
+            .item7 {
+                padding: 20px;
+            }
+            .item7 h1{
+                margin: 0;
+            }
+            .item8 {
+                padding: 20px;
+                display: grid;
+                grid-template-rows: 50px 1fr;
+                grid-gap: 10px;
+            }
+            
+            .item9 {
+                padding: 20px;
+                display: grid;
+                grid-template-rows: 50px 1fr;
+                grid-gap: 10px;
+            }
+            .ReviewTitle h1{
+                margin: 0;
+            }
+            .ReviewTitle a{
+                margin-left: auto;
+            }
+            .Review p{
+                margin: 0;
+            }
+            .Review {
+                background-color: white;
+                border: 2px solid;
+                height: 95%;
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top">
+            <a href="">무비평</a>
+            <input type="text">
+			<button type="submit">검색</button>
+			<img class = "picture" src="" alt="profile">
+			<p>이름</p>
+			
+		</div>
+        <div class="bottom">
+            <div class="item1">
+                <img class = "post" src="" alt="Movie-Poster">
+            </div>
+            <div class="item2">
+                <div class="item5">
+                    <div class = score>
+                        <div class = star>★★★★★</div>
+                        <div class = star-shape>☆☆☆☆☆</div>
+                    </div>
+                    <h1>평균 평점</h1>
+                </div>
+                <div class="item6">
+                    <input type="text" placeholder="리뷰 작성해주세요">
+                    <button type="submit">리뷰 등록
+                </div>
+
+                <div class="item7">
+                    <h1>영화 줄거리</h1>
+                    <p></p>
+
+                </div>
+            </div>
+            <div class="item3">
+                <h1>출연 / 제작 </h1>
+                <div class="person-img">
+                    <div class="person">
+                        <img src="" alt="image">
+                        <p>감독이름</p>
+                        <p>감독</p>
+                    </div>
+                    <div class="person">
+                        <img src="" alt="image">
+                        <p>배우 이름</p>
+                        <p>극중 이름</p>
+                    </div>
+                    <div class="person">
+                        <img src="" alt="image">
+                        <p>배우 이름</p>
+                        <p>극중 이름</p>
+                    </div>
+                    <div class="person">
+                        <img src="" alt="image">
+                        <p>배우 이름</p>
+                        <p>극중 이름</p>
+                    </div>
+                    <div class="person">
+                        <img src="" alt="image">
+                        <p>배우 이름</p>
+                        <p>극중 이름</p>
+                    </div>
+                    <div class="person">
+                        <img src="" alt="image">
+                        <p>배우 이름</p>
+                        <p>극중 이름</p>
+                    </div>
+                </div>
+            </div>
+            <div class="item4">
+                <div class="item8">
+                    <div class="ReviewTitle">
+                        <h1>전문가 평론</h1>
+                        <a href="">더보기</a>
+                    </div>
+                    <div class="Review">
+                        <p></p>
+                        <p></p>
+                    </div>
+                </div>
+                <div class="item9">
+                    <div class="ReviewTitle">
+                        <h1>리뷰</h1>
+                        <a href="">더보기</a>
+                    </div>
+                    <div class="Review">
+                        <p></p>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
