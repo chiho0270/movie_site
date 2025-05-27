@@ -1,11 +1,12 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./commons/Main";
 
 function App() {
-  return(
+  return (
     <Router>
       <Routes>
-        <Route path = '/' element={<MainPage />} />
+        <Route path="/" element={<MainPage />} />
       </Routes>
     </Router>
   );
