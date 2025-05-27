@@ -23,6 +23,102 @@ const exampleMovies = [
         country: "USA", 
         genre: "Adventure"
     },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
+    {
+        id: 3, 
+        posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
+        title: "Interstellar", 
+        releaseDate: '2014-11-07',
+        country: "USA", 
+        genre: "Adventure"
+    },
 ];
 
 export default exampleMovies;
