@@ -1,0 +1,15 @@
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    username: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    },
+    hashed_password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+    
+  });
+  return User;
+};

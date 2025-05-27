@@ -26,8 +26,8 @@
  *                - 회원가입 버튼 클릭 시 회원가입 페이지로 이동
  *                - 
  * 백 요청 :
- *      - /api/movies/popular
- *          - 인기 영화 리스트 요청
+ *      - /api/search/boxoffice       # movies -> search , popular -> boxoffice
+ *          - 박스오피스 순위 리스트 요청
  *          - 영화 제목 검색 요청
  *          - 사용자 로그인 상태 확인 요청
  */
