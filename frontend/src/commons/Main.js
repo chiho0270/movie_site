@@ -26,21 +26,22 @@
  *                - 회원가입 버튼 클릭 시 회원가입 페이지로 이동
  *                - 
  * 백 요청 :
- *      - /api/movies/popular
- *          - 인기 영화 리스트 요청
+ *      - /api/search/boxoffice       # movies -> search , popular -> boxoffice
+ *          - 박스오피스 순위 리스트 요청
  *          - 영화 제목 검색 요청
  *          - 사용자 로그인 상태 확인 요청
  */
 
 import React from "react";
 import MovieSection from "../components/MovieSection";
-import TagList from "../components/TagList";
 import exampleMovies from "../DummyData";
+import Header from "../components/Header";
 
 function MainPage() {
     return (
-        <div>
-            <h2>인기 영화</h2>
+        <div className="w-full overflow-x-hidden">
+            <Header/>
+            <h2 className="text-xl font-bold px-4 mt-6">인기 영화</h2>
             <MovieSection movies={exampleMovies}/>
         </div>
     );
