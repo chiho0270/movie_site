@@ -3,19 +3,22 @@
 	<head>
 		<title>로그인</title>
 		<style>
-			div {
-				background-color: lightblue;
+			body {
+				background-color: beige;
+			}
+			.login {
+				background-color: yellow;
 				margin: 0 auto;  
 				border-radius: 20px;
 				width: 300px;
 				height: 300px;
 				padding: 50px;
 				text-align: center;
-				
+				border: 5px solid;
 			}
 			input {
 				width: 300px;
-      				height: 40px;
+      			height: 40px;
 				margin-bottom: 10px;
 			}
 			button {
@@ -26,19 +29,27 @@
 			a {
 				text-decoration: none;
 			}
+			.siteName {
+				width: 100%;
+				font-size: 50px;
+				font-weight: bold;
+				text-align: center;
+				margin-bottom: 20px;
+				margin-top: 20px;;
+			}
 		</style>
 	</head>
 	<body>
-
-		<h1 style="text-align: center;">사이트 이름</h1>
-		<div>
+		<div class="siteName">
+			<a href="">무비평</h1>
+		</div>
+		<div class="login">
   			<input type="text" name="userid" placeholder="아이디를 입력하세요" required>
 			<input type="password" name="password" placeholder="비밀번호를 입력하세요" required>
 			<hr style="height: 3px; background-color: black; border: none;">
 			<button type="submit">로그인</button>
 			<a href="register.html">회원가입</a>
 		</div>
-
 	</body>
 	
 

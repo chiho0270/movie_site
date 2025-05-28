@@ -1,17 +1,18 @@
 import React from "react";
 import MoviePoster from "./MoviePoster";
+import './MovieSection.css';
 
 const MovieSection = ({movies}) => {
     return(
-        <section className="my-8">
-            <div className="flex space-x-4 overflow-x-auto whitespace-nowrap px-2">
+        <section className="movie-section">
+            <div className="movie-scroll-container"> 
                 {movies.map((movie) => (
                     <MoviePoster
-                    key={movie.id}
-                    title={movie.title}
-                    posterUrl={movie.posterUrl}
-                    releaseDate={movie.releaseDate}
-                    country={movie.country}
+                        key={movie.id}
+                        title={movie.title}
+                        posterUrl={movie.posterUrl}
+                        releaseDate={movie.releaseDate}
+                        country={movie.country}
                     />
                 ))}
             </div>
