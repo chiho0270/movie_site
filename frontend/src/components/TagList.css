@@ -1,0 +1,44 @@
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  justify-content: center;
+}
+.tag-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: #e5e7eb;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tag-btn:hover {
+  background: #d1d5db;
+}
+
+@media (max-width: 1200px) {
+  .tag-btn {
+    font-size: 0.95rem;
+    padding: 0.45rem 0.9rem;
+  }
+}
+@media (max-width: 1024px) {
+  .tag-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+@media (max-width: 768px) {
+  .tag-btn {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+  }
+}
+@media (max-width: 480px) {
+  .tag-btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
