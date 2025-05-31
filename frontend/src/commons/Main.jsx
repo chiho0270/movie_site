@@ -36,12 +36,55 @@ import React from "react";
 import MovieSection from "../components/MovieSection";
 import exampleMovies from "../DummyData";
 import Header from "../components/Header";
+import BannerSlider from "../components/BannerSlider";
 
 function MainPage() {
+    const bannerImages = exampleMovies.slice(0, 5).map((movie) => movie.posterUrl);
+
     return (
         <div className="w-full overflow-x-hidden">
             <Header/>
-            <h2 className="text-xl font-bold px-4 mt-6">인기 영화</h2>
+
+            <div>
+                <BannerSlider images={bannerImages} />
+                <div className="search-overlay">
+                    <h1 className="search-title">어떤 영화를 찾으십니까?</h1>
+                    <input 
+                        type="text"
+                        placeholder="Search"
+                        className="search-input"
+                    />
+                    <p className="search-description">
+                        장르 또는 태그로 탐색해보세요.
+                    </p>
+                    <div className="tag-list" style={{
+                        marginTop: "1rem",
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "0.5rem",
+                        justifyContent: "center",
+                    }}>
+                        {["액션", "코미디", "로맨스", "범죄", "SF", "판타지", "드라마", "애니메이션"].map((tag) => (
+                            <button 
+                            key={tag}
+                            style={{
+                                padding: "0.4rem 0.8rem",
+                                borderRadius: "9999px",
+                                background: "transparent",
+                                color: "white",
+                                border: "1px solid white",
+                                cursor: "pointer",
+                                fontSize: "0.9rem",
+                            }}
+                            >
+                                {tag}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            
+            <h2 className="section-title">인기 영화</h2>
             <MovieSection movies={exampleMovies}/>
         </div>
     );

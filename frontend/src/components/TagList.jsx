@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getGenres } from "../api/getGenres";
-import './TagList.css';
+import '../styles/TagList.css';
 
 function TagList() {
   const [genres, setGenres] = useState([]);

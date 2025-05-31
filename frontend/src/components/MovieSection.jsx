@@ -1,6 +1,6 @@
 import React from "react";
 import MoviePoster from "./MoviePoster";
-import './MovieSection.css';
+import '../styles/MovieSection.css';
 
 const MovieSection = ({movies}) => {
     return(

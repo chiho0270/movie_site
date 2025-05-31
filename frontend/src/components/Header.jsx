@@ -1,10 +1,17 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import './Header.css'; // 추가
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import '../styles/Header.css'; // 추가
 
 function Header({ isLoggedIn, user }) {
   const location = useLocation();
   const isMainPage = location.pathname === "/";
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+   
+    navigate('/login');
+  };
 
   return (
     <header className="header">
@@ -21,7 +28,10 @@ function Header({ isLoggedIn, user }) {
       )}
       <div className="user-menu">
         {isLoggedIn ? (
-          <span>{user.nickname || user.username}</span>
+          <>
+            <span>{user.nickname || user.username}</span>
+            <button onClick={handleLogout} ></button>
+          </>
         ) : (
           <>
             <Link to="/login" className='isLoggedIn'>로그인</Link>
