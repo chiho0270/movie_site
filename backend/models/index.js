@@ -11,6 +11,9 @@ const sequelize = new Sequelize(
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+// 모델 등록
 db.User = require('./user')(sequelize, Sequelize.DataTypes);
+db.Movie = require('./movie')(sequelize, Sequelize.DataTypes);
 
 module.exports = db;
