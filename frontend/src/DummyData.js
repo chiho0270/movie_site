@@ -1,7 +1,7 @@
 const exampleMovies = [
     {
         id: 1, 
-        posterUrl: "https://www.themoviedb.org/t/p/w1280/zTgjeblxSLSvomt6F6UYtpiD4n7.jpg", 
+        posterUrl: "https://i.ytimg.com/vi/1FdB6LPSMkI/maxresdefault.jpg", 
         title: "Inception", 
         releaseDate: '2010-07-16',
         country: "USA", 
@@ -9,7 +9,7 @@ const exampleMovies = [
     },
     {
         id: 2, 
-        posterUrl: "https://www.themoviedb.org/t/p/w1280/kkjTbwV1Xnj8wBL52PjOcXzTbnb.jpg", 
+        posterUrl: "https://i.pinimg.com/736x/0a/46/fc/0a46fcbcac3cf985e87b8d22c2f48dac.jpg", 
         title: "The Dark Knight", 
         releaseDate: '2008-07-18',
         country: "USA", 
@@ -24,7 +24,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 4, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -32,7 +32,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 5, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -40,7 +40,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 6, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -48,7 +48,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 7, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -56,7 +56,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 8, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -64,7 +64,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 9, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -72,7 +72,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 10, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -80,7 +80,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 11, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -88,7 +88,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 12, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -96,7 +96,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 13, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -104,7 +104,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 14, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
@@ -112,7 +112,7 @@ const exampleMovies = [
         genre: "Adventure"
     },
     {
-        id: 3, 
+        id: 15, 
         posterUrl: "https://www.themoviedb.org/t/p/w1280/evoEi8SBSvIIEveM3V6nCJ6vKj8.jpg", 
         title: "Interstellar", 
         releaseDate: '2014-11-07',
