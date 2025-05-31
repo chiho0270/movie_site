@@ -22,3 +22,18 @@
  *      /api/register
  *      - 회원가입 요청 처리, 모든 사용자 정보를 서버에 전송
  */
+
+import React from "react";
+import Header from "../components/Header";
+import Register from "../components/Register";
+
+function RegisterPage() {
+  return (
+    <>
+      <Header />
+      <Register />
+    </>
+  );
+}
+
+export default RegisterPage;

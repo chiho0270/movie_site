@@ -25,7 +25,7 @@ function Header({ isLoggedIn, user }) {
         ) : (
           <>
             <Link to="/login" className='isLoggedIn'>로그인</Link>
-            <Link to="/signup" className='isLoggedIn'>회원가입</Link>
+            <Link to="/register" className='isLoggedIn'>회원가입</Link>
           </>
         )}
       </div>
