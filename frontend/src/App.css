@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: #000; /* 메인페이지 배경색을 검정색으로 지정 */
+  min-height: 100vh;      /* 화면 전체를 채우도록 */
 }
 
 .App-logo {
@@ -14,7 +16,6 @@
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

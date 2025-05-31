@@ -34,13 +34,14 @@
 
 import React from "react";
 import MovieSection from "../components/MovieSection";
-import TagList from "../components/TagList";
 import exampleMovies from "../DummyData";
+import Header from "../components/Header";
 
 function MainPage() {
     return (
-        <div>
-            <h2>인기 영화</h2>
+        <div className="w-full overflow-x-hidden">
+            <Header/>
+            <h2 className="text-xl font-bold px-4 mt-6">인기 영화</h2>
             <MovieSection movies={exampleMovies}/>
         </div>
     );

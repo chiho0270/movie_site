@@ -1,0 +1,51 @@
+.movie-section {
+  margin: 2rem 0;
+}
+
+.movie-scroll-container {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 1rem;
+  scroll-behavior: smooth;
+}
+
+.movie-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.movie-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 4px;
+}
+
+/* 노트북(1024px 이하)에서도 반응형 적용 */
+@media (max-width: 1200px) {
+  .movie-section {
+    margin: 1.5rem 0;
+  }
+  .movie-scroll-container {
+    gap: 0.8rem;
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .movie-section {
+    margin: 1.2rem 0;
+  }
+  .movie-scroll-container {
+    gap: 0.7rem;
+    padding: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-section {
+    margin: 1rem 0;
+  }
+  .movie-scroll-container {
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+}
