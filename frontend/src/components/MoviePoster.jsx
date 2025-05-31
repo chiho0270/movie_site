@@ -1,5 +1,5 @@
 import React from "react";
-import "./MoviePoster.css";
+import "../styles/MoviePoster.css";
 
 const MoviePoster = ({ title, posterUrl, releaseDate, country}) => {
     return(
