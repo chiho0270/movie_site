@@ -1,0 +1,109 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: #131313;
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.logo a {
+  text-decoration: none;   /* 밑줄 제거 */
+  color: inherit;          /* 부모 색상 상속 */
+  font-weight: bold;
+  font-size: inherit;
+  transition: none;
+}
+.logo a:visited,
+.logo a:active,
+.logo a:hover,
+.logo a:focus {
+  color: inherit;
+  text-decoration: none;
+}
+.search-box {
+  flex: 1;
+  margin: 0 1.5rem;
+}
+.search-box input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+}
+.user-menu {
+  display: flex;
+  gap: 1rem;
+  font-size: 1rem;
+}
+.user-menu a {
+  text-decoration: none;   /* 밑줄 제거 */
+  color: inherit;          /* 상단바 색상과 동일하게 */
+  font-weight: bold;
+  font-size: inherit;
+  transition: none;
+}
+.user-menu a:visited,
+.user-menu a:active,
+.user-menu a:hover,
+.user-menu a:focus {
+  color: inherit;          /* 항상 같은 색상 */
+  text-decoration: none;
+}
+@media (max-width: 1200px) {
+  .header {
+    padding: 0.8rem 1rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 1024px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.7rem;
+  }
+  .search-box {
+    margin: 0 0 0.5rem 0;
+  }
+  .logo {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  .user-menu {
+    justify-content: center;
+    gap: 0.7rem;
+  }
+}
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  .search-box {
+    margin: 0 0 0.5rem 0;
+  }
+  .logo {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  .user-menu {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+@media (max-width: 480px) {
+  .search-box {
+    display: none;
+  }
+}
