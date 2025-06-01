@@ -3,15 +3,32 @@ import "./Auth.css";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
 
-function Login() {
+function Login({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
 
-  // 로그인 요청 함수 (실제 요청은 필요에 따라 구현)
-  const handleLogin = (e) => {
+  // 로그인 요청 함수
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // 로그인 로직 추가
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (onLoginSuccess) onLoginSuccess(data.access_token);
+        alert('로그인 성공!');
+        window.location.href = '/';
+      } else {
+        const data = await res.json();
+        alert(data.error || '로그인 실패');
+      }
+    } catch (err) {
+      alert('서버 오류');
+    }
   };
 
   return (

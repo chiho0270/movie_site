@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('./models');
 
-const SECRET_KEY = process.env.SECRET_KEY || 'your-secret-key-her';
+const SECRET_KEY = process.env.SECRET_KEY || 'your-secret-key-here';
 const ACCESS_TOKEN_EXPIRE_MINUTES = 30;
 
 // 비밀번호 해시 함수
@@ -30,7 +30,7 @@ function createAccessToken(payload) {
 async function authenticateUser(username, password) {
   const user = await User.findOne({ where: { username } });
   if (!user) return null;
-  const valid = await verifyPassword(password, user.hashed_password);
+  const valid = await verifyPassword(password, user.password); // 로그인 시 user.password 사용
   if (!valid) return null;
   return user;
 }

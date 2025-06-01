@@ -26,10 +26,20 @@ router.post('/register', async (req, res) => {
       return res.status(409).json({ error: 'Username already exists' });
     }
     const hashed_password = await getPasswordHash(password);
-    await User.create({ username, hashed_password, ...extraData });
+    // User 모델에 맞게 필드 매핑
+    await User.create({
+      username,
+      password: hashed_password,
+      full_name: extraData.name,
+      email: extraData.email,
+      birth_date: extraData.birth,
+      gender: extraData.gender,
+      user_role: extraData.user_role || 'GeneralReviewer',
+      created_at: new Date()
+    });
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
-    res.status(500).json({ error: 'Registration failed' });
+    res.status(500).json({ error: 'Registration failed' + err });
   }
 });
 
@@ -39,15 +49,15 @@ router.post('/login', async (req, res) => {
   try {
     const user = await authenticateUser(username, password);
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: '존재하지 않은 사용자입니다.' });
     }
-    const token = createAccessToken({ userId: user.id, username: user.username });
+    const token = createAccessToken({ userId: user.id, username: user.username, user_role: user.user_role });
     res.json({
       access_token: token,
       user: { id: user.id, username: user.username }
     });
   } catch (err) {
-    res.status(500).json({ error: 'Login failed' });
+    res.status(500).json({ error: 'Login failed: ' + err });
   }
 });
 

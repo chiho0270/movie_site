@@ -27,10 +27,10 @@ import React from "react";
 import Header from "../components/Header";
 import Register from "../components/Register";
 
-function RegisterPage() {
+function RegisterPage({ isLoggedIn, user }) {
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} user={user} />
       <Register />
     </>
   );

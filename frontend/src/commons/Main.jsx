@@ -32,18 +32,38 @@
  *          - 사용자 로그인 상태 확인 요청
  */
 
-import React from "react";
-import MovieSection from "../components/MovieSection";
-import exampleMovies from "../DummyData";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
+import MovieSection from "../components/MovieSection";
 import BannerSlider from "../components/BannerSlider";
 
-function MainPage() {
-    const bannerImages = exampleMovies.slice(0, 5).map((movie) => movie.posterUrl);
+function MainPage({ isLoggedIn, user, onLogout }) {
+    const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        const fetchMovies = async () => {
+            setLoading(true);
+            setError("");
+            try {
+                // 박스오피스 순위로 영화 목록 가져오기
+                const res = await fetch("/api/search/boxoffice");
+                const data = await res.json();
+                setMovies(data.movies || []);
+            } catch (err) {
+                setError("영화 목록을 불러오지 못했습니다.");
+            }
+            setLoading(false);
+        };
+        fetchMovies();
+    }, []);
+
+    const bannerImages = movies.slice(0, 5).map((movie) => movie.poster_url);
 
     return (
         <div className="w-full overflow-x-hidden">
-            <Header/>
+            <Header isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
 
             <div>
                 <BannerSlider images={bannerImages} />
@@ -64,7 +84,7 @@ function MainPage() {
                         gap: "0.5rem",
                         justifyContent: "center",
                     }}>
-                        {["액션", "코미디", "로맨스", "범죄", "SF", "판타지", "드라마", "애니메이션"].map((tag) => (
+                        {["액션", "범죄", "SF", "코미디", "로맨스", "스릴러", "공포", "드라마", "멜로/로맨스", "미스터리", "판타지", "누아르", "역사", "전쟁", "재난", "애니메이션", "오피스", "요리"].map((tag) => (
                             <button 
                             key={tag}
                             style={{
@@ -83,9 +103,31 @@ function MainPage() {
                     </div>
                 </div>
             </div>
-            
             <h2 className="section-title">인기 영화</h2>
-            <MovieSection movies={exampleMovies}/>
+            {loading ? (
+                <div style={{ color: 'white', textAlign: 'center', margin: '2rem' }}>로딩 중...</div>
+            ) : error ? (
+                <div style={{ color: '#ff6464', textAlign: 'center', margin: '2rem' }}>{error}</div>
+            ) : (
+                <MovieSection movies={
+                    movies
+                        .slice() // 원본 배열 보호
+                        .sort((a, b) => {
+                            if (a.rank && b.rank) return a.rank - b.rank;
+                            if (a.rank) return -1;
+                            if (b.rank) return 1;
+                            return 0;
+                        })
+                        .map(m => ({
+                            id: m.tmdb_id,
+                            posterUrl: m.poster_url,
+                            title: m.title,
+                            releaseDate: m.release_date,
+                            country: m.country,
+                            genre: m.genreAlt || ""
+                        }))
+                } />
+            )}
         </div>
     );
 };
