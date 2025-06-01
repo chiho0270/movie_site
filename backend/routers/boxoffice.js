@@ -59,14 +59,34 @@ router.get('/boxoffice', async (req, res) => {
       if (!poster_url) {
         const tmdbApiKey = process.env.TMDB_API_KEY || process.env.REACT_APP_TMDB_TOKEN || "b457b7c18d8eb65b1bfc864d4b83ee11";
         try {
-          const tmdbRes = await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(searchTitle)}&language=ko&api_key=${tmdbApiKey}`
+          // 제목 정제: 극장판, 완결편, 완결판 등 모두 제거
+          const cleanTitle = item.movieNm.replace(/(극장판|완결편|완결판)/g, '').trim();
+          let tmdbRes = await fetch(
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(cleanTitle)}&language=ko&api_key=${tmdbApiKey}`
           );
-          const tmdbData = await tmdbRes.json();
-          poster_url = tmdbData.results && tmdbData.results[0]?.poster_path
-            ? `https://image.tmdb.org/t/p/w200${tmdbData.results[0].poster_path}`
-            : null;
-        } catch {}
+          let tmdbData = await tmdbRes.json();
+          // 1차 시도: 한글 제목
+          if (tmdbData.results && tmdbData.results[0]?.poster_path) {
+            poster_url = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
+          } else {
+            // 2차 시도: 원제(영문)로 재검색 (가능한 경우)
+            if (item.movieNmEn && item.movieNmEn !== item.movieNm) {
+              tmdbRes = await fetch(
+                `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(item.movieNmEn)}&language=en&api_key=${tmdbApiKey}`
+              );
+              tmdbData = await tmdbRes.json();
+              if (tmdbData.results && tmdbData.results[0]?.poster_path) {
+                poster_url = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
+              }
+            }
+            // 실패시 로그
+            if (!poster_url) {
+              console.error(`[박스오피스 포스터 실패] 제목: ${item.movieNm} / clean: ${cleanTitle} / 영문: ${item.movieNmEn || '-'} `);
+            }
+          }
+        } catch (e) {
+          console.error('[TMDB 포스터 검색 에러]', item.movieNm, e);
+        }
       }
       return {
         rank: Number(item.rank),

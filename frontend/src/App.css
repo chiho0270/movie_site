@@ -109,6 +109,20 @@
   z-index: 1;
 }
 
+.banner-slider .slick-slide > div {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.banner-slider .slick-list {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.banner-slider .slick-track {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
 .search-overlay {
   position: absolute;
   top: 50%;

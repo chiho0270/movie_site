@@ -27,7 +27,7 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
             );
             const tmdbData = await tmdbRes.json();
             const posterUrl = tmdbData.results && tmdbData.results[0]?.poster_path
-              ? `https://image.tmdb.org/t/p/w200${tmdbData.results[0].poster_path}`
+              ? `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`
               : null;
             // audits(심의정보) 추출, 감독/배우/출연진 추출
             let audits = "-", directors = [], actors = [], cast = [];
@@ -215,6 +215,9 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
         <ul style={{ color: "white" }}>
           {savedMovies.map((movie) => (
             <li key={movie.tmdb_id || movie.movieCd} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
+              {movie.poster_url && (
+                <img src={movie.poster_url} alt={movie.title || movie.movieNm} style={{ width: 40, height: 60, objectFit: 'cover', marginRight: 10, borderRadius: 4 }} />
+              )}
               <span style={{ flex: 1 }}>{movie.title || movie.movieNm} ({movie.release_date || movie.openDt})</span>
               <button onClick={() => handleDelete(movie.tmdb_id || movie.movieCd)} style={{ background: '#e53935', color: 'white', padding: '4px 10px', marginLeft: 10 }}>삭제</button>
             </li>

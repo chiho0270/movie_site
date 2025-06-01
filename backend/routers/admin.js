@@ -16,17 +16,46 @@ router.get('/movie', async (req, res) => {
 // 영화 저장
 router.post('/movie', async (req, res) => {
   try {
-    const { movieCd, movieNm, openDt, genreAlt, posterUrl } = req.body;
+    const { movieCd, movieNm, openDt, genreAlt, posterUrl, movieNmEn } = req.body;
     // 중복 체크
     const exists = await Movie.findOne({ where: { tmdb_id: movieCd } });
     if (exists) return res.status(409).json({ error: '이미 저장된 영화입니다.' });
+    let finalPosterUrl = posterUrl;
+    // 프론트에서 포스터가 없거나 빈 값이면 백엔드에서 TMDB 검색 시도
+    if (!finalPosterUrl) {
+      try {
+        const cleanTitle = movieNm.replace(/(극장판|완결편|완결판)/g, '').trim();
+        const tmdbApiKey = process.env.TMDB_API_KEY || process.env.REACT_APP_TMDB_TOKEN || "b457b7c18d8eb65b1bfc864d4b83ee11";
+        const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+        let tmdbRes = await fetch(
+          `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(cleanTitle)}&language=ko&api_key=${tmdbApiKey}`
+        );
+        let tmdbData = await tmdbRes.json();
+        if (tmdbData.results && tmdbData.results[0]?.poster_path) {
+          finalPosterUrl = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
+        } else if (movieNmEn && movieNmEn !== movieNm) {
+          tmdbRes = await fetch(
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(movieNmEn)}&language=en&api_key=${tmdbApiKey}`
+          );
+          tmdbData = await tmdbRes.json();
+          if (tmdbData.results && tmdbData.results[0]?.poster_path) {
+            finalPosterUrl = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
+          }
+        }
+        if (!finalPosterUrl) {
+          console.error(`[단일영화 포스터 실패] 제목: ${movieNm} / clean: ${cleanTitle} / 영문: ${movieNmEn || '-'} `);
+        }
+      } catch (e) {
+        console.error('[TMDB 포스터 검색 에러]', movieNm, e);
+      }
+    }
     await Movie.create({
       tmdb_id: movieCd,
       title: movieNm,
       release_date: openDt,
       country: null,
       average_rating: 0,
-      poster_url: posterUrl,
+      poster_url: finalPosterUrl,
       overview: null
     });
     res.json({ message: '저장 성공' });
@@ -110,20 +139,40 @@ router.post('/boxoffice/save', async (req, res) => {
     const list = data.boxOfficeResult?.weeklyBoxOfficeList || [];
     let savedCount = 0;
     for (const item of list) {
-      // TMDB 포스터 가져오기 (불필요한 단어 제거)
+      // TMDB 포스터 가져오기 (불필요한 단어 제거, 검색 실패시 로그)
       let posterUrl = null;
       try {
-        const cleanTitle = item.movieNm.replace(/(극장판|완결편)/g, '').trim();
+        // 제목 정제: 극장판, 완결편, 완결판 등 모두 제거
+        const cleanTitle = item.movieNm.replace(/(극장판|완결편|완결판)/g, '').trim();
         const tmdbApiKey = process.env.TMDB_API_KEY || process.env.REACT_APP_TMDB_TOKEN || "b457b7c18d8eb65b1bfc864d4b83ee11";
         const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-        const tmdbRes = await fetch(
+        let tmdbRes = await fetch(
           `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(cleanTitle)}&language=ko&api_key=${tmdbApiKey}`
         );
-        const tmdbData = await tmdbRes.json();
-        posterUrl = tmdbData.results && tmdbData.results[0]?.poster_path
-          ? `https://image.tmdb.org/t/p/w200${tmdbData.results[0].poster_path}`
-          : null;
-      } catch {}
+        let tmdbData = await tmdbRes.json();
+        // 1차 시도: 한글 제목
+        if (tmdbData.results && tmdbData.results[0]?.poster_path) {
+          posterUrl = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
+        } else if (item.posterUrl) {
+          // KOBIS에서 받은 posterUrl이 있으면 사용 (프론트와 동일하게)
+          posterUrl = item.posterUrl;
+        } else if (item.movieNmEn && item.movieNmEn !== item.movieNm) {
+          // 2차 시도: 원제(영문)로 재검색 (가능한 경우)
+          tmdbRes = await fetch(
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(item.movieNmEn)}&language=en&api_key=${tmdbApiKey}`
+          );
+          tmdbData = await tmdbRes.json();
+          if (tmdbData.results && tmdbData.results[0]?.poster_path) {
+            posterUrl = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
+          }
+        }
+        // 실패시 로그
+        if (!posterUrl) {
+          console.error(`[박스오피스 포스터 실패] 제목: ${item.movieNm} / clean: ${cleanTitle} / 영문: ${item.movieNmEn || '-'} `);
+        }
+      } catch (e) {
+        console.error('[TMDB 포스터 검색 에러]', item.movieNm, e);
+      }
       // DB에 없으면 저장 (중복 방지)
       const exists = await Movie.findOne({ where: { tmdb_id: item.movieCd } });
       if (!exists) {
