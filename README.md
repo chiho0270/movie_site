@@ -4,11 +4,11 @@
 ### 팀 소개
 + 팀명: 네명이서하는마피아게임
 + 구성:
-    + 이치호: 팀장/백
-    + 신광호: 발표자료/프론트
-    + 신주안: 자료조사/프론트
+    + 이치호: 팀장/백엔드
+    + 신광호: 발표자료/프론트엔드
+    + 신주안: 자료조사/프론트엔드
     + 이민혁: 자료조사/DB
-    + 홍상은: 발표/백
+    + 홍상은: 발표/백엔드
 ### 개요
 + 과제명: 영화 평론사이트 제작 및 운영
 + 사이트명: 무비평
@@ -19,25 +19,5 @@
   + Front-end: React
   + Back-end: Node.js
   + DB: Amazon RDS (MySQL)
-  + API 연동: TMDB API
+  + 영화 데이터: Kobis API + TMDB API
   + 배포 인프라: AWS
-  + Front-Back: axios
-
-## 실행 방법
-+ 아직 없음
-
-# EN
-This project is a team project on capstone design within the server programming course at DCU.
-
-## Project Introduction
-### Overview
-+ Name: Movie review website production and operation
-
-### Team Introduction
-+ Name: Mafia game for four people
-+ Composition:
-    + chiho0270: Leader/back
-    + skh: PPT/front
-    + juahn112: Research/front
-    + vpsxja3269: Research/DB
-    + SangEunHong: PT/back
