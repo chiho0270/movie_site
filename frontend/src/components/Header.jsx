@@ -9,15 +9,21 @@ function Header({ isLoggedIn, user }) {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-   
     navigate('/login');
   };
 
+  const genres = ["액션", "코미디", "로맨스", "범죄", "SF", "판타지", "드라마", "애니메이션"];
+
   return (
     <header className="header">
-      <div className="logo">
-        <Link to="/">🎬무비평</Link>
+      <div className='left-menu'>
+        
+        <div className="logo">
+          <Link to="/">🎬무비평</Link>
+        </div>
       </div>
+      
+
       {!isMainPage && (
         <div className="search-box">
           <input

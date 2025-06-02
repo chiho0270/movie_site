@@ -129,14 +129,28 @@
 }
 
 .search-input {
-  width: 100%;
-  max-width: 400px;
+  width: 400px;
   padding: 0.75rem 1rem;
   border-radius: 10px;
   border: none;
   font-size: 1rem;
   margin-top: 1rem;
+  outline: none;
 }
+
+.search-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+}
+
+.search-subtext {
+  color: white;
+  margin-top: 1rem;
+}
+
 .tag-list {
   margin-top: 1rem;
   display: flex;
@@ -145,21 +159,17 @@
   gap: 0.5rem;
 }
 
-.tag-list button {
+.tag-button {
   padding: 0.4rem 0.9rem;
-  border: 1px solid white;
-  background: rgba(0, 0, 0, 0.1);
+  border: 0px solid rgb(255, 255, 255);
+  background-color: rgba(146, 104, 109, 0.521);
   color: white;
   border-radius: 15px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.2s ease;
 }
-.tag-list button:hover {
-  background-color: rgba(255,255,255,0.3);
-}
-.search-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: white;
+
+.tag-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }

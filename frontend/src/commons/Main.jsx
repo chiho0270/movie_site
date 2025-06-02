@@ -54,31 +54,12 @@ function MainPage() {
                         placeholder="Search"
                         className="search-input"
                     />
-                    <p className="search-description">
-                        장르 또는 태그로 탐색해보세요.
-                    </p>
-                    <div className="tag-list" style={{
-                        marginTop: "1rem",
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: "0.5rem",
-                        justifyContent: "center",
-                    }}>
+                    <p className="search-subtext">장르 또는 태그로 탐색해보세요.</p>
+                    <div className="tag-list">
                         {["액션", "코미디", "로맨스", "범죄", "SF", "판타지", "드라마", "애니메이션"].map((tag) => (
-                            <button 
-                            key={tag}
-                            style={{
-                                padding: "0.4rem 0.8rem",
-                                borderRadius: "9999px",
-                                background: "transparent",
-                                color: "white",
-                                border: "1px solid white",
-                                cursor: "pointer",
-                                fontSize: "0.9rem",
-                            }}
-                            >
-                                {tag}
-                            </button>
+                        <button key={tag} className="tag-button">
+                        {tag}
+                        </button>
                         ))}
                     </div>
                 </div>

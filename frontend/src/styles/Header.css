@@ -9,6 +9,13 @@
   top: 0;
   z-index: 50;
 }
+
+.left-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
@@ -41,6 +48,8 @@
   display: flex;
   gap: 1rem;
   font-size: 1rem;
+  align-items: center;
+  position: relative;
 }
 .user-menu a {
   text-decoration: none;   /* 밑줄 제거 */
@@ -106,4 +115,30 @@
   .search-box {
     display: none;
   }
+}
+
+.isLoggedIn {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.genre-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.genre-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.3rem 0.7rem;
+  transition: background-color 0.2s ease;
+}
+
+.genre-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
