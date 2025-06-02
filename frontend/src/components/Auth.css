@@ -1,0 +1,161 @@
+.auth-bg {
+  min-height: 100vh;
+  background: #161616;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-box {
+  background: #232323;
+  border-radius: 24px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  min-width: 350px;
+  max-width: 370px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.auth-title {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.auth-label {
+  color: #bcbcbc;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.auth-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.95rem 1rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.07rem;
+  background: #2d2d2d;
+  color: #fff;
+  margin-bottom: 1.1rem;
+  outline: none;
+  transition: background 0.2s, border 0.2s;
+}
+
+.auth-input::placeholder {
+  color: #888;
+  font-size: 1rem;
+}
+
+.pw-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pw-wrap .auth-input {
+  padding-right: 2.5rem; /* 버튼 공간 확보 */
+}
+
+.pw-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 1rem 0;
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.15rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.7rem;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  letter-spacing: 1.5px;
+}
+.auth-btn:hover {
+  background: #b71c1c;
+}
+
+.auth-error {
+  color: #ff6464;
+  background: #2a0000;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.97rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* 아이디 입력창 + 중복확인 버튼 한 줄 배치 */
+.id-row {
+  display: flex;
+  align-items: stretch; /* 높이를 동일하게 맞춤 */
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.id-row .auth-input {
+  flex: 7; /* input이 7의 비율 */
+  margin-bottom: 0; /* 중요: 여백 제거 */
+}
+
+.id-check-btn {
+  flex: 3; /* 버튼이 3의 비율 */
+  font-size: 0.98rem;
+  padding: 0.95rem 1.1rem; /* input과 동일한 세로 패딩 */
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.id-check-btn:hover {
+  background: #b71c1c;
+}
+
+@media (max-width: 480px) {
+  .auth-box {
+    min-width: 90vw;
+    padding: 1.5rem 0.8rem;
+  }
+  .auth-title {
+    font-size: 1.5rem;
+  }
+  
+  .id-check-btn {
+    font-size: 0.9rem;
+    padding: 0.95rem 0.8rem;
+  }
+}

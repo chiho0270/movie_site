@@ -14,3 +14,18 @@
  *      - 로그인 요청 및 성공 여부를 반환
  *      - 성공 시 JWT 토큰을 반환
  */
+
+import React from "react";
+import Header from "../components/Header";
+import Login from "../components/Login";
+
+function LoginPage() {
+  return (
+    <>
+      <Header />
+      <Login />
+    </>
+  );
+}
+
+export default LoginPage;
