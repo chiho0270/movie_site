@@ -8,6 +8,10 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // 페이지네이션 상태
+  const [currentPage, setCurrentPage] = useState(1);
+  const MOVIES_PER_PAGE = 10;
+
   // Kobis API로 영화 검색 (연관검색어 포함)
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -106,6 +110,8 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
   // 유저 목록 관리
   const [users, setUsers] = useState([]);
   const [userError, setUserError] = useState("");
+  const [userPage, setUserPage] = useState(1);
+  const USERS_PER_PAGE = 10;
   const fetchUsers = async () => {
     try {
       const res = await fetch("/api/admin/users");
@@ -153,6 +159,20 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
 
   // 저장 여부 확인
   const isSaved = (movieCd) => savedMovies.some((m) => m.tmdb_id === movieCd || m.movieCd === movieCd);
+
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(savedMovies.length / MOVIES_PER_PAGE);
+  const paginatedMovies = savedMovies.slice(
+    (currentPage - 1) * MOVIES_PER_PAGE,
+    currentPage * MOVIES_PER_PAGE
+  );
+
+  // 유저 페이지네이션 계산
+  const userTotalPages = Math.ceil(users.length / USERS_PER_PAGE);
+  const paginatedUsers = users.slice(
+    (userPage - 1) * USERS_PER_PAGE,
+    userPage * USERS_PER_PAGE
+  );
 
   return (
     <div>
@@ -213,7 +233,7 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
         </div>
         <h3 style={{ marginTop: 40 }}>저장된 영화 목록</h3>
         <ul style={{ color: "white" }}>
-          {savedMovies.map((movie) => (
+          {paginatedMovies.map((movie) => (
             <li key={movie.tmdb_id || movie.movieCd} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
               {movie.poster_url && (
                 <img src={movie.poster_url} alt={movie.title || movie.movieNm} style={{ width: 40, height: 60, objectFit: 'cover', marginRight: 10, borderRadius: 4 }} />
@@ -223,6 +243,42 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
             </li>
           ))}
         </ul>
+        {/* 페이지네이션 UI */}
+        {totalPages > 1 && (
+          <div style={{ margin: "16px 0", textAlign: "center" }}>
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              style={{ marginRight: 8 }}
+            >
+              이전
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => setCurrentPage(i + 1)}
+                style={{
+                  margin: "0 2px",
+                  fontWeight: currentPage === i + 1 ? "bold" : "normal",
+                  background: currentPage === i + 1 ? "#1976d2" : "#222",
+                  color: "white",
+                  border: "none",
+                  borderRadius: 3,
+                  padding: "4px 10px"
+                }}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              style={{ marginLeft: 8 }}
+            >
+              다음
+            </button>
+          </div>
+        )}
         <h3 style={{ marginTop: 40 }}>유저 목록</h3>
         {userError && <div style={{ color: '#ff6464' }}>{userError}</div>}
         <table style={{ width: '100%', color: 'white', background: 'rgba(30,30,30,0.9)', borderCollapse: 'collapse', marginBottom: 40 }}>
@@ -237,7 +293,7 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
             </tr>
           </thead>
           <tbody>
-            {users.map((u) => (
+            {paginatedUsers.map((u) => (
               <tr key={u.user_id} style={{ borderBottom: '1px solid #444' }}>
                 <td style={{ padding: 8 }}>{u.username}</td>
                 <td style={{ padding: 8 }}>{u.email}</td>
@@ -257,6 +313,42 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
             ))}
           </tbody>
         </table>
+        {/* 유저 페이지네이션 UI */}
+        {userTotalPages > 1 && (
+          <div style={{ margin: "16px 0", textAlign: "center" }}>
+            <button
+              onClick={() => setUserPage((p) => Math.max(1, p - 1))}
+              disabled={userPage === 1}
+              style={{ marginRight: 8 }}
+            >
+              이전
+            </button>
+            {Array.from({ length: userTotalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => setUserPage(i + 1)}
+                style={{
+                  margin: "0 2px",
+                  fontWeight: userPage === i + 1 ? "bold" : "normal",
+                  background: userPage === i + 1 ? "#1976d2" : "#222",
+                  color: "white",
+                  border: "none",
+                  borderRadius: 3,
+                  padding: "4px 10px"
+                }}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => setUserPage((p) => Math.min(userTotalPages, p + 1))}
+              disabled={userPage === userTotalPages}
+              style={{ marginLeft: 8 }}
+            >
+              다음
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
