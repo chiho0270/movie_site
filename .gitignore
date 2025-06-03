@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# 환경설정 파일
+.env
+
+# 빌드 결과물
+build/
+dist/
+
+# Gradle
+.gradle/
+
+# 로그 파일
+*.log
+
+# IDE/에디터 설정
+.vscode/
+.DS_Store
