@@ -1,0 +1,12 @@
+.footer {
+  display: flex;             /* 자식들을 가로 축으로 배치 */
+  justify-content: center;   /* 좌우 중앙 정렬(필요에 따라 변경) */
+  align-items: center;       /* 세로 중앙 정렬 */
+  gap: 1rem;                 /* 자식 간 간격 (옵션) */
+  margin: 50px;
+}
+
+a {
+  color: white;
+  text-decoration: none; /* 밑줄 제거하고 싶으면 추가 */
+}

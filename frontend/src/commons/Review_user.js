@@ -18,3 +18,20 @@
  *      - /api/user-reviews/{reviewId}/like : 리뷰 좋아요 요청
  *      - /api/users/{usertId} : 특정 사용자 정보/정보 요청
  */
+
+import React from "react";
+import Header from "../components/Header";
+import Content from "../components/ReviewUser";
+import Footer from "../components/PageUI";
+
+function ReviewUser() {
+  return (
+    <>
+      <Header/>
+      <Content/>
+      <Footer/>
+    </>
+  );
+}
+
+export default ReviewUser;

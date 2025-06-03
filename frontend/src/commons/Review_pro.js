@@ -19,3 +19,20 @@
  *      - /api/expert-reviews/{reviewId}/like : 평론 좋아요 요청
  *      - /api/experts/{expertId} : 전문가 정보/정보 요청
  */
+
+import React from "react";
+import Header from "../components/Header";
+import Content from "../components/ReviewPro";
+import Footer from "../components/PageUI";
+
+function ReviewPro() {
+  return (
+    <>
+      <Header/>
+      <Content/>
+      <Footer/>
+    </>
+  );
+}
+
+export default ReviewPro;
