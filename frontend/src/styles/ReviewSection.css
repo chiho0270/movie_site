@@ -1,0 +1,39 @@
+.item4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.item4 * {
+  background-color: coral;
+  display: flex;
+}
+
+.item8, .item9 {
+  padding: 20px;
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  grid-gap: 10px;
+}
+
+.ReviewTitle h1 {
+  margin: 0;
+}
+
+.ReviewTitle a {
+  margin-left: auto;
+}
+
+.Review {
+  background-color: white;
+  border: 2px solid;
+  height: 95%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Review p {
+  margin: 0;
+}

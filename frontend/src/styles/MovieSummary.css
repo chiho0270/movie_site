@@ -1,0 +1,40 @@
+.item5 {
+  display: flex;
+}
+
+.score {
+  position: relative;
+  height: 100%;
+  font-size: 70px;
+  margin-left: 10px;
+}
+
+.star {
+  position: absolute;
+  width: 50%;
+  overflow: hidden;
+  color: yellow;
+  text-shadow: 2px 2px 3px black;
+}
+
+.item6 input {
+  background-color: white;
+  outline: none;
+  height: 100%;
+  width: 90%;
+}
+
+.item6 button {
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+}
+
+.item7 {
+  padding: 20px;
+}
+
+.item7 h1 {
+  margin: 0;
+}

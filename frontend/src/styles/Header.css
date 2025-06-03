@@ -35,8 +35,12 @@
   text-decoration: none;
 }
 .search-box {
-  flex: 1;
-  margin: 0 1.5rem;
+  position: absolute;
+  right: 180px;
+  width: 250px;
+  max-width: 100%;
+  padding: 0.5rem;
+  border-radius: 8px;
 }
 .search-box input {
   width: 100%;

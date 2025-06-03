@@ -8,7 +8,7 @@ const MovieSection = ({movies}) => {
             <div className="movie-scroll-container"> 
                 {movies.map((movie) => (
                     <MoviePoster
-                        key={movie.id}
+                        id={movie.id}
                         title={movie.title}
                         posterUrl={movie.posterUrl}
                         releaseDate={movie.releaseDate}

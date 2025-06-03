@@ -12,7 +12,6 @@ function Header({ isLoggedIn, user }) {
     navigate('/login');
   };
 
-  const genres = ["액션", "코미디", "로맨스", "범죄", "SF", "판타지", "드라마", "애니메이션"];
 
   return (
     <header className="header">

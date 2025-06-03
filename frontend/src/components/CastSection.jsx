@@ -1,16 +1,16 @@
 import React from "react";
-import "./CastSection.css";
+import "../styles/CastSection.css";
 
-function CastSection() {
+function CastSection({ cast = [] }) {
   return (
-    <div className="item3">
-      <h1>출연 / 제작 </h1>
-      <div className="person-img">
-        {Array(6).fill(0).map((_, i) => (
-          <div className="person" key={i}>
-            <img src="" alt="image" />
-            <p>배우 이름</p>
-            <p>극중 이름</p>
+    <div className="cast-section">
+      <h2>출연 / 제작</h2>
+      <div className="cast-grid">
+        {cast.map((person, index) => (
+          <div key={index} className="cast-card">
+            <img src={person.imageUrl || "/default-person.png"} alt={person.name} />
+            <p className="cast-name">{person.name}</p>
+            <p className="cast-role">{person.role}</p>
           </div>
         ))}
       </div>

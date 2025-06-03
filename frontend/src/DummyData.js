@@ -5,7 +5,55 @@ const exampleMovies = [
         title: "Inception", 
         releaseDate: '2010-07-16',
         country: "USA", 
-        genre: "Sci-Fi"
+        genre: "Sci-Fi",
+        summary: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.",
+        averageRating: 4.5,
+        expertReviews: [
+            {
+                reviewer: "John Doe",
+                rating: 5,
+                comment: "A masterpiece of modern cinema!"
+            },
+            {
+                reviewer: "Jane Smith",
+                rating: 4,
+                comment: "Intriguing plot with stunning visuals."
+            }
+        ],
+        userReviews: [
+            {
+                username: "moviebuff123",
+                rating: 4,
+                comment: "Loved the concept and execution!"
+            },
+            {
+                username: "cinema_lover",
+                rating: 5,
+                comment: "One of the best movies I've ever seen!"
+            }
+        ],
+        cast: [
+            {
+                name: "Leonardo DiCaprio",
+                role: "Dom Cobb"
+            },
+            {
+                name: "Joseph Gordon-Levitt",
+                role: "Arthur"
+            },
+            {
+                name: "Elliot Page",
+                role: "Ariadne"
+            },
+            {
+                name: "Tom Hardy",
+                role: "Eames"
+            },
+            {
+                name: "Ken Watanabe",
+                role: "Saito"
+            }
+        ]
     },
     {
         id: 2, 

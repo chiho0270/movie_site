@@ -1,0 +1,33 @@
+.cast-section {
+  margin-top: 40px;
+  color: white;
+}
+
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cast-card {
+  text-align: center;
+}
+
+.cast-card img {
+  width: 100px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #eee;
+}
+
+.cast-name {
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.cast-role {
+  font-size: 14px;
+  color: #ccc;
+}

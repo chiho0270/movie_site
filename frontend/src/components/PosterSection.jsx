@@ -1,10 +1,10 @@
 import React from "react";
-import "./PosterSection.css";
+import "../styles/PosterSection.css";
 
-function PosterSection() {
+function PosterSection({posterUrl}) {
   return (
-    <div className="item1">
-      <img className="post" src="" alt="Movie-Poster" />
+    <div className="poster-section">
+      <img className="poster-image" src={posterUrl} alt="Movie-Poster" />
     </div>
   );
 }

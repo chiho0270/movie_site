@@ -1,0 +1,14 @@
+.poster-section {
+  width: 50%;
+  height: 30%;
+  display: flex;
+  justify-content:  flex-start;
+  align-items: center;
+  margin: 4rem;
+}
+
+.poster-image {
+  width: 800px;
+  height: 800px;
+  border-radius: 8px;
+}
