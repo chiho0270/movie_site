@@ -15,7 +15,10 @@ function MoviePage() {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`/api/movie/${id}`)
+        // id가 숫자면 기존대로, 아니면 tmdb_id나 movieCd로 TMDB에서 직접 fetch
+        const isNumeric = !isNaN(Number(id));
+        let url = isNumeric ? `/api/movie/${id}` : `/api/movie/tmdb/${id}`;
+        fetch(url)
             .then(res => {
                 if (!res.ok) throw new Error('영화 정보를 불러올 수 없습니다.');
                 return res.json();
@@ -31,7 +34,7 @@ function MoviePage() {
     }, [id]);
 
     if (loading) return <div>영화 정보를 불러오는 중...</div>;
-    if (error || !movieData) return <div>영화를 찾을 수 없습니다.</div>;
+    if (error || !movieData) return <div>DB에 저장되지 않은 영화이거나, 정보를 찾을 수 없습니다.</div>;
 
     const isLoggedIn = true; // 테스트용
     const userId = 1;
@@ -49,7 +52,7 @@ function MoviePage() {
                                 isLoggedIn={isLoggedIn}
                                 userId={userId}
                                 movieId={movieData.movie_id}
-                                averageRating={movieData.average_rating}
+                                averageRating={movieData.average_rating ? movieData.average_rating / 2 : undefined}
                             />
                         </div>
                         <div className="comment-wrapper">

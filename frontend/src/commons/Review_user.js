@@ -24,12 +24,12 @@ import Header from "../components/Header";
 import Content from "../components/ReviewUser";
 import Footer from "../components/PageUI";
 
-function ReviewUser() {
+function ReviewUser({ isLoggedIn, user, onLogout }) {
   return (
     <>
-      <Header/>
-      <Content/>
-      <Footer/>
+      <Header isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+      <Content />
+      <Footer />
     </>
   );
 }

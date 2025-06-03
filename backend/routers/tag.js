@@ -33,4 +33,23 @@ router.get('/tags', async (req, res) => {
   }
 });
 
+// 태그id로 영화 id 목록 반환
+router.get('/movie-ids', async (req, res) => {
+  const { tag, tag_id } = req.query;
+  if (!tag && !tag_id) return res.json({ movieIds: [] });
+  try {
+    let tagObj;
+    if (tag_id) {
+      tagObj = await Tag.findOne({ where: { tag_id } });
+    } else {
+      tagObj = await Tag.findOne({ where: { tag_name: tag } });
+    }
+    if (!tagObj) return res.json({ movieIds: [] });
+    const movies = await tagObj.getMovies({ attributes: ['movie_id'] });
+    res.json({ movieIds: movies.map(m => ({ movie_id: m.movie_id })) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

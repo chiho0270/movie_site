@@ -10,7 +10,8 @@ router.post('/save', async (req, res) => {
   if (!title) return res.status(400).json({ error: '영화 제목이 필요합니다.' });
   try {
     // 1. TMDB에서 영화 검색
-    const searchResult = await searchMovie(title);
+    const cleanTitle = title.replace(/(극장판|완결편)/g, '').trim();
+    const searchResult = await searchMovie(cleanTitle);
     if (!searchResult.results || searchResult.results.length === 0) {
       return res.status(404).json({ error: 'TMDB에서 영화를 찾을 수 없습니다.' });
     }
@@ -263,6 +264,31 @@ router.get('/detail', async (req, res) => {
     });
     if (!movie) return res.status(404).json({ error: '영화를 찾을 수 없습니다.' });
     res.json({ movie });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// TMDB id로 상세 정보 조회 (DB에 없을 때)
+router.get('/tmdb/:id', async (req, res) => {
+  const { id } = req.params;
+  const { getMovieDetail, getMovieCredits } = require('../utils/tmdbApi');
+  try {
+    const detail = await getMovieDetail(id);
+    if (!detail) return res.status(404).json({ error: 'TMDB에서 영화를 찾을 수 없습니다.' });
+    const credits = await getMovieCredits(id);
+    // 최소한의 정보만 반환
+    res.json({
+      movie: {
+        title: detail.title,
+        release_date: detail.release_date,
+        poster_url: detail.poster_path ? `https://image.tmdb.org/t/p/w780${detail.poster_path}` : null,
+        average_rating: detail.vote_average,
+        overview: detail.overview,
+        country: (detail.production_countries && detail.production_countries[0]?.name) || null,
+        Casts: credits ? credits.cast.map(a => ({ name: a.name, role: a.character })) : []
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -28,7 +28,7 @@ div.top {
     margin-left: 20px;
     align-items: center;
     text-decoration: none;
-    color: red;
+    color: rgb(224, 102, 102);
     font-weight: bold;
     font-size: 40px;
 }
@@ -43,79 +43,131 @@ div.top {
     border-radius: 10px;
 }
 
-.bottom {
-    background-color: beige;
-    display: grid;
-    height: 150vh;  /* 뷰포트 전체 높이의 70% */
-    width: 40%;
-    margin: 0 auto;
-    padding: 5px;
-    grid-template-rows: repeat(3, 1fr);
-    grid-gap: 20px;
-
-    /* flex: 1; */
-    /* 남은 공간을 전부 차지 */
+.review-main-split {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 32px;
 }
 
-h1 {
-    margin: 10px 20px;
-    color: white;
+.review-pro, .review-user {
+  flex: 1;
+  min-width: 320px;
+  background: #23272f;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  padding: 24px 18px 32px 18px;
+}
+
+.review-pro h2, .review-user h2 {
+  color: #e0e0e0;
+  font-size: 1.3em;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.bottom {
+  background: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .Review {
-    margin: 10px;
-    background-color: yellow;
-    display: flex;
-    flex-direction: column;
-
-}
-
-.Review * {
-    margin: 5px;
-    background-color: blueviolet;
-    padding: 5px;
-
+  background: #353a42;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(30, 30, 30, 0.18);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 16px 12px 16px;
+  margin: 0;
 }
 
 .UserInfo {
-    height: 20%;
-    display: flex;
-
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 .UserInfo img {
-    width: 10%;
-    height: 70%;
-    background-color: red;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #444950;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+.UserInfo p {
+  margin: 0 8px 0 0;
+  font-weight: 500;
+  color: #e0e0e0;
 }
 
 .point {
-    margin-left: auto;
-    margin-right: 20px;
-    align-items: center;
+  margin-left: auto;
+  color: #90caf9;
+  font-weight: bold;
 }
 
 .Content {
-
-    height: 60%;
+  margin-bottom: 8px;
+  color: #b0b0b0;
+  font-size: 1em;
 }
 
 .Heart {
-    height: 20%;
-    display: flex;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .Heart button {
-    height: 100%;
-    width: 80px;
-    font-size: 50px;
-    /* 텍스트 크기 */
-    color: red;
-    border: none;
-    /* 기본 테두리 제거 */
-    outline: none;
-    /* 클릭할때때 생기는 외곽선 제거 */
-    background: transparent;
-    /* 배경도 투명하게 원하면 */
+  height: 32px;
+  width: 32px;
+  font-size: 1.5em;
+  color: #ff6464;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.Heart button:hover {
+  color: #d32f2f;
+}
+
+.HeartCount {
+  color: #90caf9;
+  font-weight: 600;
+  font-size: 1.1em;
+  margin: 0;
+}
+
+h1 {
+  margin: 24px 0 0 0;
+  color: #e0e0e0;
+  text-align: center;
+  font-size: 2em;
+}
+
+body, html {
+  background: #181a1b;
+}
+
+@media (max-width: 900px) {
+  .review-main-split {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .review-pro, .review-user {
+    min-width: 0;
+    width: 100%;
+    padding: 16px 6vw 24px 6vw;
+  }
 }
 

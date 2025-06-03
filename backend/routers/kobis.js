@@ -53,9 +53,11 @@ router.post('/boxoffice/weekly/save', async (req, res) => {
     let saved = 0, failed = 0;
     for (const item of list) {
       try {
-        let movie = await Movie.findOne({ where: { title: item.movieNm, release_date: item.openDt } });
+        // 제목에서 특정 단어 제외
+        const cleanTitle = item.movieNm.replace(/(극장판|완결편)/g, '').trim();
+        let movie = await Movie.findOne({ where: { title: cleanTitle, release_date: item.openDt } });
         if (!movie) {
-          const searchResult = await searchMovie(item.movieNm);
+          const searchResult = await searchMovie(cleanTitle);
           if (!searchResult.results || searchResult.results.length === 0) throw new Error('TMDB 검색 실패');
           const tmdbMovie = searchResult.results[0];
           const detail = await getMovieDetail(tmdbMovie.id);
@@ -124,9 +126,11 @@ router.get('/movie/list', async (req, res) => {
     let list = (response.data.movieListResult?.movieList || []).filter(m => m.movieNm && m.movieNm.toLowerCase().includes(movieNm.toLowerCase()));
     // TMDB 포스터 병합 (최대 10개만)
     list = await Promise.all(list.slice(0, 10).map(async m => {
+      // 제목에서 특정 단어 제외
+      const cleanTitle = m.movieNm.replace(/(극장판|완결편)/g, '').trim();
       let poster_url = null;
       try {
-        const tmdb = await searchMovie(m.movieNm);
+        const tmdb = await searchMovie(cleanTitle);
         if (tmdb.results && tmdb.results.length > 0 && tmdb.results[0].poster_path) {
           poster_url = `https://image.tmdb.org/t/p/w780${tmdb.results[0].poster_path}`;
         }
@@ -152,16 +156,32 @@ router.get('/boxoffice', async (req, res) => {
     const data = await getWeeklyBoxOffice({ targetDt, weekGb: '0' });
     const boxofficeList = data.boxOfficeResult?.weeklyBoxOfficeList || [];
 
-    // DB에서 영화 정보 매핑 (title+release_date 기준)
+    // DB에서 영화 정보 매핑 (title+release_date 기준) + TMDB 포스터 병합
+    const { searchMovie } = require('../utils/tmdbApi');
     const movieInfos = await Promise.all(
       boxofficeList.map(async (item) => {
-        const movie = await Movie.findOne({ where: { title: item.movieNm, release_date: item.openDt } });
+        // 제목에서 특정 단어 제외
+        const cleanTitle = item.movieNm.replace(/(극장판|완결편)/g, '').trim();
+        const movie = await Movie.findOne({ where: { title: cleanTitle, release_date: item.openDt } });
+        let poster_url = null;
+        if (movie && movie.poster_url) {
+          poster_url = movie.poster_url;
+        } else {
+          // TMDB에서 포스터 검색 (DB에 없을 때만)
+          try {
+            const tmdb = await searchMovie(cleanTitle);
+            if (tmdb.results && tmdb.results.length > 0 && tmdb.results[0].poster_path) {
+              poster_url = `https://image.tmdb.org/t/p/w780${tmdb.results[0].poster_path}`;
+            }
+          } catch {}
+        }
         return {
           rank: item.rank,
           movieNm: item.movieNm,
           openDt: item.openDt,
           audiAcc: item.audiAcc,
-          ...movie ? { dbMovie: movie } : {}
+          poster_url,
+          dbMovie: movie || null
         };
       })
     );

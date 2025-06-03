@@ -225,7 +225,7 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
                   <img src={movie.poster_url} alt={movie.movieNm} style={{ width: 55, height: 90, objectFit: 'cover', borderRadius: 4, marginRight: 12, background: '#222' }} />
                 )}
                 <div><b>{movie.movieNm}</b> ({movie.openDt})</div>
-                <div>영화코드: {movie.movieCd} / 장르: {movie.genreAlt}</div>
+                <div>영화코드: {movie.movieCd} / 장르: {movie.genreAlt} / 심의등급 : {movie.audits}</div>
                 {movie.isSaved && <div style={{ color: "#4caf50", marginTop: 4 }}>TMDB에 이미 저장됨</div>}
               </div>
               <button onClick={() => handleSave(movie)} style={{ background: "#1976d2", color: "white", padding: 8 }}>저장</button>
