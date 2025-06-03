@@ -173,3 +173,25 @@
 .tag-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+.search-result-list {
+  margin-top: 10px;
+  background-color: rgb(66, 66, 66);
+  padding: 10px;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  display: block;
+  padding: 8px;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  border-bottom: 1px solid #ddd;
+ text-align: left; 
+}
+
+.search-result-item:hover {
+  background-color: #f0f0f0;
+}

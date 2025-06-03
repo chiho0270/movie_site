@@ -50,6 +50,7 @@ function RatingInput({ isLoggedIn, userId, movieId, averageRating }) {
   };
 
   const displayRating = hoverRating || selectedRating;
+  const safeAverage = averageRating ?? 0;
 
   return (
     <div className="rating-input">
@@ -68,7 +69,7 @@ function RatingInput({ isLoggedIn, userId, movieId, averageRating }) {
             {displayRating.toFixed(1)} / 5.0
         </span>
         <span className="average-rating">
-            평균 ★ {averageRating.toFixed(1)}
+            평균 ★ {safeAverage.toFixed(1)}
         </span>
     </div>
   );
