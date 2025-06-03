@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Movie, User } = require('../models');
+const { Movie, User, Tag, MovieTag } = require('../models');
 const { getWeeklyBoxOffice } = require('../utils/kobisApi');
 
 // ===== 영화 관리 =====
@@ -13,10 +13,10 @@ router.get('/movie', async (req, res) => {
     res.status(500).json({ error: 'DB 조회 실패' });
   }
 });
-// 영화 저장
+// 영화 저장 (태그ID도 함께 저장)
 router.post('/movie', async (req, res) => {
   try {
-    const { movieCd, movieNm, openDt, genreAlt, posterUrl, movieNmEn } = req.body;
+    const { movieCd, movieNm, openDt, genreAlt, posterUrl, movieNmEn, tagIds } = req.body;
     // 중복 체크
     const exists = await Movie.findOne({ where: { tmdb_id: movieCd } });
     if (exists) return res.status(409).json({ error: '이미 저장된 영화입니다.' });
@@ -49,7 +49,7 @@ router.post('/movie', async (req, res) => {
         console.error('[TMDB 포스터 검색 에러]', movieNm, e);
       }
     }
-    await Movie.create({
+    const movie = await Movie.create({
       tmdb_id: movieCd,
       title: movieNm,
       release_date: openDt,
@@ -58,6 +58,22 @@ router.post('/movie', async (req, res) => {
       poster_url: finalPosterUrl,
       overview: null
     });
+    // 태그ID가 없고 genreAlt가 있으면 자동 매핑 (콤마, 슬래시 모두 지원)
+    let tagIdList = tagIds;
+    if ((!Array.isArray(tagIds) || tagIds.length === 0) && genreAlt) {
+      // genreAlt: "범죄,드라마,액션,미스터리" 또는 "범죄/드라마/액션/미스터리" 형태 모두 지원
+      const genreNames = genreAlt.split(/[\/,]/).map(g => g.trim()).filter(Boolean);
+      // DB에서 해당 태그명에 해당하는 tag_id 조회
+      const foundTags = await Tag.findAll({ where: { tag_name: genreNames } });
+      tagIdList = foundTags.map(t => t.tag_id);
+    }
+    // 중복 제거
+    tagIdList = Array.from(new Set(tagIdList));
+    // 태그ID가 있으면 MovieTag에 저장
+    if (Array.isArray(tagIdList) && tagIdList.length > 0) {
+      const movieTags = tagIdList.map(tag_id => ({ movie_id: movie.movie_id, tag_id }));
+      await MovieTag.bulkCreate(movieTags);
+    }
     res.json({ message: '저장 성공' });
   } catch (err) {
     res.status(500).json({ error: 'DB 저장 실패' });
@@ -75,6 +91,16 @@ router.delete('/movie/:movieCd', async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ error: 'DB 삭제 실패' });
+  }
+});
+// 영화 전체 삭제
+router.delete('/movie', async (req, res) => {
+  try {
+    await Movie.destroy({ where: {}, truncate: true, restartIdentity: true });
+    await require('../models').MovieTag.destroy({ where: {}, truncate: true });
+    res.json({ message: '전체 영화 삭제 및 초기화 성공' });
+  } catch (err) {
+    res.status(500).json({ error: '전체 영화 삭제 실패' });
   }
 });
 
@@ -176,7 +202,8 @@ router.post('/boxoffice/save', async (req, res) => {
       // DB에 없으면 저장 (중복 방지)
       const exists = await Movie.findOne({ where: { tmdb_id: item.movieCd } });
       if (!exists) {
-        await Movie.create({
+        // 1. 영화 저장
+        const movie = await Movie.create({
           tmdb_id: item.movieCd,
           title: item.movieNm,
           release_date: item.openDt,
@@ -185,12 +212,57 @@ router.post('/boxoffice/save', async (req, res) => {
           poster_url: posterUrl,
           overview: null
         });
+        // 2. 태그 연동 (genreAlt에서 태그명 추출)
+        if (item.genreAlt) {
+          const genreNames = item.genreAlt.split(/[\/,]/).map(g => g.trim()).filter(Boolean);
+          const foundTags = await Tag.findAll({ where: { tag_name: genreNames } });
+          let tagIdList = foundTags.map(t => t.tag_id);
+          tagIdList = Array.from(new Set(tagIdList));
+          if (tagIdList.length > 0) {
+            const movieTags = tagIdList.map(tag_id => ({ movie_id: movie.movie_id, tag_id }));
+            await MovieTag.bulkCreate(movieTags);
+          }
+        }
         savedCount++;
       }
     }
     res.json({ message: `${targetDt} 주간 박스오피스 ${savedCount}건 저장 완료` });
   } catch (err) {
     res.status(500).json({ error: '박스오피스 저장 실패', detail: err.message });
+  }
+});
+
+// ===== 태그 관리 =====
+// 태그 전체 조회
+router.get('/tags', async (req, res) => {
+  try {
+    const tags = await Tag.findAll();
+    res.json({ tags });
+  } catch (err) {
+    res.status(500).json({ error: '태그 조회 실패' });
+  }
+});
+
+// 태그 저장
+router.post('/tags', async (req, res) => {
+  try {
+    const { tag_name } = req.body;
+    if (!tag_name) return res.status(400).json({ error: '태그명을 입력하세요.' });
+    const [tag, created] = await Tag.findOrCreate({ where: { tag_name } });
+    if (!created) return res.status(409).json({ error: '이미 존재하는 태그입니다.' });
+    res.json({ message: '태그 저장 성공', tag });
+  } catch (err) {
+    res.status(500).json({ error: '태그 저장 실패' });
+  }
+});
+
+// 태그 전체 삭제 및 autoIncrement 초기화
+router.delete('/tags', async (req, res) => {
+  try {
+    await Tag.destroy({ where: {}, truncate: true, restartIdentity: true });
+    res.json({ message: '전체 태그 삭제 및 초기화 성공' });
+  } catch (err) {
+    res.status(500).json({ error: '태그 전체 삭제 실패' });
   }
 });
 

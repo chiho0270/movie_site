@@ -15,5 +15,7 @@ db.Sequelize = Sequelize;
 // 모델 등록
 db.User = require('./user')(sequelize, Sequelize.DataTypes);
 db.Movie = require('./movie')(sequelize, Sequelize.DataTypes);
+db.Tag = require('./tag')(sequelize, Sequelize.DataTypes);
+db.MovieTag = require('./movietag')(sequelize, Sequelize.DataTypes);
 
 module.exports = db;

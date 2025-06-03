@@ -3,7 +3,7 @@ const router = express.Router();
 const { Movie } = require('../models');
 const jwt = require('jsonwebtoken');
 
-// 박스오피스 순위/검색/로그인 상태 확인
+// 박스오피스 목록만 조회 (DB 저장 X)
 router.get('/boxoffice', async (req, res) => {
   // 로그인 상태 확인
   let isLoggedIn = false;
@@ -38,74 +38,44 @@ router.get('/boxoffice', async (req, res) => {
     return res.status(500).json({ error: '박스오피스 API 조회 실패' });
   }
 
-  // DB에서 박스오피스 영화 제목과 일치하는 영화만 가져오기
+  // TMDB 포스터 등 부가 정보 병합 (DB 저장 X)
   try {
-    // node-fetch 동적 import (최상단 require 불가 시)
     const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-    // 영화 제목 배열 (불필요한 단어 제거)
-    const cleanTitle = (title) => title.replace(/(극장판|완결편)/g, '').trim();
-    const titles = boxofficeList.map(item => cleanTitle(item.movieNm));
-    // DB에서 제목이 박스오피스에 포함된 영화만 조회
-    const dbMovies = await Movie.findAll({
-      where: { title: titles },
-    });
-    // 박스오피스 순위대로 정렬 및 포스터/상세정보 병합 (비동기)
-    const movies = await Promise.all(boxofficeList.map(async (item, idx) => {
-      // TMDB 검색용 제목 정제
-      const searchTitle = cleanTitle(item.movieNm);
-      const dbMovie = dbMovies.find(m => m.title === searchTitle);
-      let poster_url = dbMovie ? dbMovie.poster_url : null;
-      // TMDB에서 포스터 재검색 (DB에 없거나 포스터 없을 때)
-      if (!poster_url) {
-        const tmdbApiKey = process.env.TMDB_API_KEY || process.env.REACT_APP_TMDB_TOKEN || "b457b7c18d8eb65b1bfc864d4b83ee11";
-        try {
-          // 제목 정제: 극장판, 완결편, 완결판 등 모두 제거
-          const cleanTitle = item.movieNm.replace(/(극장판|완결편|완결판)/g, '').trim();
-          let tmdbRes = await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(cleanTitle)}&language=ko&api_key=${tmdbApiKey}`
+    const cleanTitle = (title) => title.replace(/(극장판|완결편|완결판)/g, '').trim();
+    const movies = await Promise.all(boxofficeList.map(async (item) => {
+      let poster_url = null;
+      const tmdbApiKey = process.env.TMDB_API_KEY || process.env.REACT_APP_TMDB_TOKEN || "b457b7c18d8eb65b1bfc864d4b83ee11";
+      try {
+        const cleanMovieTitle = cleanTitle(item.movieNm);
+        let tmdbRes = await fetch(
+          `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(cleanMovieTitle)}&language=ko&api_key=${tmdbApiKey}`
+        );
+        let tmdbData = await tmdbRes.json();
+        if (tmdbData.results && tmdbData.results[0]?.poster_path) {
+          poster_url = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
+        } else if (item.movieNmEn && item.movieNmEn !== item.movieNm) {
+          tmdbRes = await fetch(
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(item.movieNmEn)}&language=en&api_key=${tmdbApiKey}`
           );
-          let tmdbData = await tmdbRes.json();
-          // 1차 시도: 한글 제목
+          tmdbData = await tmdbRes.json();
           if (tmdbData.results && tmdbData.results[0]?.poster_path) {
             poster_url = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
-          } else {
-            // 2차 시도: 원제(영문)로 재검색 (가능한 경우)
-            if (item.movieNmEn && item.movieNmEn !== item.movieNm) {
-              tmdbRes = await fetch(
-                `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(item.movieNmEn)}&language=en&api_key=${tmdbApiKey}`
-              );
-              tmdbData = await tmdbRes.json();
-              if (tmdbData.results && tmdbData.results[0]?.poster_path) {
-                poster_url = `https://image.tmdb.org/t/p/w780${tmdbData.results[0].poster_path}`;
-              }
-            }
-            // 실패시 로그
-            if (!poster_url) {
-              console.error(`[박스오피스 포스터 실패] 제목: ${item.movieNm} / clean: ${cleanTitle} / 영문: ${item.movieNmEn || '-'} `);
-            }
           }
-        } catch (e) {
-          console.error('[TMDB 포스터 검색 에러]', item.movieNm, e);
         }
-      }
+      } catch {}
       return {
         rank: Number(item.rank),
         title: item.movieNm,
-        tmdb_id: dbMovie ? dbMovie.tmdb_id : null,
-        poster_url,
-        release_date: dbMovie ? dbMovie.release_date : null,
-        country: dbMovie ? dbMovie.country : null,
-        average_rating: dbMovie ? dbMovie.average_rating : null,
+        movieCd: item.movieCd,
+        openDt: item.openDt,
+        genreAlt: item.genreAlt,
+        posterUrl: poster_url,
         // 필요시 추가 필드
       };
     }));
-    res.json({
-      isLoggedIn,
-      user: isLoggedIn ? user : null,
-      movies
-    });
+    res.json({ isLoggedIn, user: isLoggedIn ? user : null, movies });
   } catch (err) {
-    res.status(500).json({ error: 'DB 조회 실패' });
+    res.status(500).json({ error: '박스오피스 부가정보 병합 실패' });
   }
 });
 
