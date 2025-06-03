@@ -50,7 +50,13 @@ function RatingInput({ isLoggedIn, userId, movieId, averageRating }) {
   };
 
   const displayRating = hoverRating || selectedRating;
-  const safeAverage = averageRating ?? 0;
+  // averageRating이 null, undefined, NaN, 객체, 문자열 등일 때 안전하게 처리
+  let safeAverage = 0;
+  if (typeof averageRating === 'number' && !isNaN(averageRating)) {
+    safeAverage = averageRating;
+  } else if (typeof averageRating === 'string' && !isNaN(Number(averageRating))) {
+    safeAverage = Number(averageRating);
+  }
 
   return (
     <div className="rating-input">
@@ -69,7 +75,7 @@ function RatingInput({ isLoggedIn, userId, movieId, averageRating }) {
             {displayRating.toFixed(1)} / 5.0
         </span>
         <span className="average-rating">
-            평균 ★ {safeAverage.toFixed(1)}
+            평균 ★ {typeof safeAverage === 'number' && !isNaN(safeAverage) ? safeAverage.toFixed(1) : '0.0'}
         </span>
     </div>
   );

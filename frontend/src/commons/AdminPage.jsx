@@ -19,17 +19,12 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
   const [userPage, setUserPage] = useState(1);
   const USERS_PER_PAGE = 10;
 
-  // 박스오피스 상태
-  const [boxofficeMovies, setBoxofficeMovies] = useState([]);
-  const [boxofficeLoading, setBoxofficeLoading] = useState(false);
-  const [boxofficeError, setBoxofficeError] = useState("");
-
   const navigate = useNavigate();
 
-  // 공통 fetch 함수들
+  // 저장된 영화 목록은 DB에서 가져옴
   const fetchSavedMovies = async () => {
     try {
-      const res = await fetch("/api/admin/movie");
+      const res = await fetch("/api/movie/list");
       const data = await res.json();
       setSavedMovies(data.movies || []);
     } catch {
@@ -46,19 +41,6 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
       setUsers([]);
     }
   };
-  const fetchBoxoffice = async () => {
-    setBoxofficeLoading(true);
-    setBoxofficeError("");
-    try {
-      const res = await fetch("/api/boxoffice");
-      const data = await res.json();
-      setBoxofficeMovies(data.movies || []);
-    } catch (err) {
-      setBoxofficeError("박스오피스 목록을 불러오지 못했습니다.");
-      setBoxofficeMovies([]);
-    }
-    setBoxofficeLoading(false);
-  };
 
   useEffect(() => {
     if (!user || user.user_role !== 'Admin') {
@@ -69,17 +51,17 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
   useEffect(() => {
     fetchSavedMovies();
     fetchUsers();
-    fetchBoxoffice();
   }, []);
 
-  // 영화 검색
+  // 영화 검색 (Kobis API 연관검색 + TMDB 저장 상세정보 병합)
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setSearchResults([]);
     try {
-      const res = await fetch(`/api/kobis/movie/related?movieNm=${encodeURIComponent(search)}`);
+      // Kobis 연관검색 API 사용
+      const res = await fetch(`/api/kobis/movie/list?movieNm=${encodeURIComponent(search)}`);
       const contentType = res.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         setError('서버에서 올바른 JSON이 반환되지 않았습니다. (API 경로/서버 상태 확인)');
@@ -87,16 +69,27 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
         return;
       }
       const data = await res.json();
-      // Kobis API 결과 구조에 맞게 파싱
+      let kobisMovies = [];
       if (data.related) {
-        setSearchResults(data.related);
+        kobisMovies = data.related;
       } else if (data.movieListResult && data.movieListResult.movieList) {
-        setSearchResults(data.movieListResult.movieList);
+        kobisMovies = data.movieListResult.movieList;
       } else if (data.movies) {
-        setSearchResults(data.movies);
-      } else {
-        setError("검색 결과가 없습니다.");
+        kobisMovies = data.movies;
       }
+      // 각 영화에 대해 TMDB(내 DB) 저장 여부 및 상세정보 병합
+      const mergedResults = await Promise.all(kobisMovies.map(async (m) => {
+        let dbMovie = null;
+        try {
+          const detailRes = await fetch(`/api/movie/detail?title=${encodeURIComponent(m.movieNm)}`);
+          if (detailRes.ok) {
+            const detailData = await detailRes.json();
+            dbMovie = detailData.movie || null;
+          }
+        } catch {}
+        return { ...m, dbMovie };
+      }));
+      setSearchResults(mergedResults);
     } catch (err) {
       setError("검색 실패: " + err.message);
     }
@@ -106,25 +99,41 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
   // 영화 저장
   const handleSave = async (movie) => {
     try {
-      const res = await fetch("/api/admin/movie", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(movie),
-      });
-      if (res.ok) {
-        alert("저장되었습니다.");
-        fetchSavedMovies();
+      // TMDB id가 있으면 saveByTmdbId로 저장, 없으면 /api/movie/save로 저장
+      if (movie.tmdb_id || movie.tmdbId) {
+        const res = await fetch("/api/movie/saveByTmdbId", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tmdb_id: movie.tmdb_id || movie.tmdbId }),
+        });
+        if (res.ok) {
+          alert("TMDB ID로 저장되었습니다.");
+          fetchSavedMovies();
+        } else {
+          alert("TMDB ID 저장 실패");
+        }
       } else {
-        alert("저장 실패");
+        const res = await fetch("/api/movie/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: movie.movieNm || movie.title }),
+        });
+        if (res.ok) {
+          alert("저장되었습니다.");
+          fetchSavedMovies();
+        } else {
+          alert("저장 실패");
+        }
       }
     } catch {
       alert("저장 실패");
     }
   };
   // 영화 삭제
-  const handleDelete = async (movieCd) => {
+  const handleDelete = async (movie) => {
+    const id = movie.movie_id || movie.tmdb_id || movie.movieCd;
     try {
-      const res = await fetch(`/api/admin/movie/${movieCd}`, { method: "DELETE" });
+      const res = await fetch(`/api/movie/delete/${id}`, { method: "DELETE" });
       if (res.ok) {
         alert("삭제되었습니다.");
         fetchSavedMovies();
@@ -133,21 +142,6 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
       }
     } catch {
       alert("삭제 실패");
-    }
-  };
-  // 전체 영화 삭제
-  const handleDeleteAllMovies = async () => {
-    if (!window.confirm("정말 모든 영화를 삭제하시겠습니까?")) return;
-    try {
-      const res = await fetch("/api/admin/movie", { method: "DELETE" });
-      if (res.ok) {
-        fetchSavedMovies();
-        alert("전체 영화 삭제 완료");
-      } else {
-        alert("전체 삭제 실패");
-      }
-    } catch {
-      alert("전체 삭제 실패");
     }
   };
 
@@ -183,6 +177,23 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
     }
   };
 
+  // 주간 박스오피스 저장
+  const handleSaveWeeklyBoxoffice = async () => {
+    if (!window.confirm("2주전 주간 박스오피스 데이터를 저장하시겠습니까?")) return;
+    try {
+      const res = await fetch("/api/kobis/boxoffice/weekly/save", { method: "POST" });
+      const data = await res.json();
+      if (res.ok) {
+        alert(`저장 완료: ${data.saved}개, 실패: ${data.failed}개`);
+        fetchSavedMovies();
+      } else {
+        alert("저장 실패: " + (data.error || "알 수 없는 오류"));
+      }
+    } catch (err) {
+      alert("저장 실패: " + err.message);
+    }
+  };
+
   // UI 렌더링
   const totalPages = Math.ceil(savedMovies.length / MOVIES_PER_PAGE);
   const paginatedMovies = savedMovies.slice((currentPage - 1) * MOVIES_PER_PAGE, currentPage * MOVIES_PER_PAGE);
@@ -210,19 +221,23 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
           {searchResults.map((movie) => (
             <div key={movie.movieCd} style={{ border: "1px solid #ccc", marginBottom: 10, padding: 10, display: "flex", alignItems: "center", color: "white" }}>
               <div style={{ flex: 1 }}>
+                {movie.poster_url && (
+                  <img src={movie.poster_url} alt={movie.movieNm} style={{ width: 55, height: 90, objectFit: 'cover', borderRadius: 4, marginRight: 12, background: '#222' }} />
+                )}
                 <div><b>{movie.movieNm}</b> ({movie.openDt})</div>
                 <div>영화코드: {movie.movieCd} / 장르: {movie.genreAlt}</div>
+                {movie.isSaved && <div style={{ color: "#4caf50", marginTop: 4 }}>TMDB에 이미 저장됨</div>}
               </div>
               <button onClick={() => handleSave(movie)} style={{ background: "#1976d2", color: "white", padding: 8 }}>저장</button>
             </div>
           ))}
         </div>
-        <h3 style={{ marginTop: 40 }}>저장된 영화 목록</h3>
+        <h2>저장된 영화 목록</h2>
         <ul style={{ color: "white" }}>
           {paginatedMovies.map((movie) => (
             <li key={movie.tmdb_id || movie.movieCd} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
               <span style={{ flex: 1 }}>{movie.title || movie.movieNm} ({movie.release_date || movie.openDt})</span>
-              <button onClick={() => handleDelete(movie.tmdb_id || movie.movieCd)} style={{ background: '#e53935', color: 'white', padding: '4px 10px', marginLeft: 10 }}>삭제</button>
+              <button onClick={() => handleDelete(movie)} style={{ background: '#e53935', color: 'white', padding: '4px 10px', marginLeft: 10 }}>삭제</button>
             </li>
           ))}
         </ul>
@@ -235,7 +250,7 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
             <button onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} style={{ marginLeft: 8 }}>다음</button>
           </div>
         )}
-        <button onClick={handleDeleteAllMovies} style={{ background: '#e53935', color: 'white', padding: '10px 18px', fontWeight: 'bold', marginBottom: 20, marginLeft: 10 }}>전체 영화 삭제</button>
+        <button onClick={handleSaveWeeklyBoxoffice} style={{ background: '#1976d2', color: 'white', padding: '10px 18px', fontWeight: 'bold', marginBottom: 20, marginLeft: 10 }}>주간 박스오피스 저장</button>
 
         <h2>유저 관리</h2>
         {userError && <div style={{ color: '#ff6464' }}>{userError}</div>}
@@ -280,21 +295,6 @@ function AdminPage({ isLoggedIn, user, onLogout }) {
             <button onClick={() => setUserPage((p) => Math.min(userTotalPages, p + 1))} disabled={userPage === userTotalPages} style={{ marginLeft: 8 }}>다음</button>
           </div>
         )}
-
-        <h2>주간 박스오피스 목록</h2>
-        {boxofficeLoading && <div>박스오피스 불러오는 중...</div>}
-        {boxofficeError && <div style={{ color: '#ff6464' }}>{boxofficeError}</div>}
-        <div>
-          {boxofficeMovies.map((movie) => (
-            <div key={movie.movieCd} style={{ border: "1px solid #888", marginBottom: 10, padding: 10, display: "flex", alignItems: "center", color: "white", background: "#222" }}>
-              <div style={{ flex: 1 }}>
-                <div><b>{movie.title || movie.movieNm}</b> ({movie.openDt})</div>
-                <div>영화코드: {movie.movieCd} / 장르: {movie.genreAlt}</div>
-              </div>
-              <button onClick={() => handleSave(movie)} style={{ background: "#1976d2", color: "white", padding: 8, marginLeft: 10 }}>저장</button>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

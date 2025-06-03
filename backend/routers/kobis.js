@@ -4,7 +4,7 @@ const { Movie } = require('../models');
 const { getWeeklyBoxOffice } = require('../utils/kobisApi');
 const { searchMovie, getMovieDetail, getMovieCredits } = require('../utils/tmdbApi');
 const { Tag, MovieTag, Cast } = require('../models');
-const { searchMovie: kobisSearchMovie } = require('../utils/kobisApi');
+const { getMovieList } = require('../utils/kobisApi');
 const jwt = require('jsonwebtoken');
 
 // 박스오피스 순위/검색
@@ -111,29 +111,31 @@ router.post('/boxoffice/weekly/save', async (req, res) => {
   }
 });
 
-// Kobis 영화명 검색 API
+// Kobis 영화명 검색 API (공식 REST 주소 활용, TMDB 포스터 병합)
 router.get('/movie/list', async (req, res) => {
   const { movieNm } = req.query;
   if (!movieNm) return res.status(400).json({ error: 'movieNm 파라미터 필요' });
   try {
-    const result = await kobisSearchMovie(movieNm);
-    res.json(result);
+    const axios = require('axios');
+    const url = `http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=ab9a00aeaf9f99c8bf2302f022e3e68a`;
+    const params = { movieNm };
+    const response = await axios.get(url, { params });
+    // 영화명에 movieNm이 포함된 결과만 반환 (대소문자 구분 없이)
+    let list = (response.data.movieListResult?.movieList || []).filter(m => m.movieNm && m.movieNm.toLowerCase().includes(movieNm.toLowerCase()));
+    // TMDB 포스터 병합 (최대 10개만)
+    list = await Promise.all(list.slice(0, 10).map(async m => {
+      let poster_url = null;
+      try {
+        const tmdb = await searchMovie(m.movieNm);
+        if (tmdb.results && tmdb.results.length > 0 && tmdb.results[0].poster_path) {
+          poster_url = `https://image.tmdb.org/t/p/w780${tmdb.results[0].poster_path}`;
+        }
+      } catch {}
+      return { ...m, poster_url };
+    }));
+    res.json({ movies: list });
   } catch (err) {
     res.status(500).json({ error: 'Kobis 영화 검색 실패', detail: err.message });
-  }
-});
-
-// Kobis 영화명 연관검색 API
-router.get('/movie/related', async (req, res) => {
-  const { movieNm } = req.query;
-  if (!movieNm) return res.status(400).json({ error: 'movieNm 파라미터 필요' });
-  try {
-    const result = await kobisSearchMovie(movieNm);
-    // 연관검색: 영화명에 movieNm이 포함된 결과만 반환 (최대 10개)
-    const related = (result.movieListResult?.movieList || []).filter(m => m.movieNm.includes(movieNm)).slice(0, 10);
-    res.json({ related });
-  } catch (err) {
-    res.status(500).json({ error: 'Kobis 연관검색 실패', detail: err.message });
   }
 });
 

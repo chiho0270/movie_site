@@ -8,7 +8,6 @@ function CastSection({ cast = [] }) {
       <div className="cast-grid">
         {cast.map((person, index) => (
           <div key={index} className="cast-card">
-            <img src={person.imageUrl || "/default-person.png"} alt={person.name} />
             <p className="cast-name">{person.name}</p>
             <p className="cast-role">{person.role}</p>
           </div>

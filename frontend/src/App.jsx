@@ -5,6 +5,7 @@ import LoginPage from "./commons/Login";
 import RegisterPage from "./commons/Register";
 import AdminPage from "./commons/AdminPage";
 import SearchPage from "./commons/Search";
+import MoviePage from "./commons/Movie";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,6 +65,7 @@ function App() {
         <Route path="/register" element={<RegisterPage isLoggedIn={isLoggedIn} user={user} />} />
         <Route path="/admin" element={<AdminPage isLoggedIn={isLoggedIn} user={user} />} />
         <Route path="/search" element={<SearchPage isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
+        <Route path="/movie/:id" element={<MoviePage isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
       </Routes>
     </Router>
   );

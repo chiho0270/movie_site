@@ -62,15 +62,34 @@ function MoviePage() {
                         <div className="movie-info">
                             <p><strong>개봉일 : </strong> {movieData.release_date}</p>
                             <p><strong>국가 : </strong> {movieData.country}</p>
-                            <p><strong>장르 : </strong> {movieData.genre}</p>
+                            <p><strong>장르 : </strong> {
+                                movieData.genre
+                                    ? movieData.genre
+                                    : (movieData.Tags && movieData.Tags.length > 0
+                                        ? movieData.Tags.map(tag => tag.tag_name).join(', ')
+                                        : '정보 없음')
+                            }</p>
                         </div>
                         <div className="movie-description">
                             <h2>줄거리</h2>
-                            <p>{movieData.summary}</p>
+                            <p>{movieData.overview}</p>
                         </div>
                     </div>
                 </div>
-                <CastSection cast={movieData.cast} />
+                {/* 출연진: PD(감독) 우선 정렬 */}
+                <CastSection
+                  cast={(() => {
+                    const castArr = movieData.Casts || movieData.cast || [];
+                    // 'PD' 또는 'Director' 역할 우선, 나머지 뒤에
+                    return castArr.slice().sort((a, b) => {
+                      const isDirA = a.role === 'PD' || a.role === 'Director';
+                      const isDirB = b.role === 'PD' || b.role === 'Director';
+                      if (isDirA && !isDirB) return -1;
+                      if (!isDirA && isDirB) return 1;
+                      return 0;
+                    });
+                  })()}
+                />
             </div>
         </div>
     );
