@@ -3,12 +3,12 @@ import '../styles/PageUI.css';
 
 function Page() {
     return (
-        <div class="footer">
-            <a class="page-navi prev disabled" href="#">이전</a>
-            <div class="page-links">
-                <a class="page-link" href="#">1</a>
+        <div className="footer">
+            <button className="page-navi prev disabled" type="button" disabled>이전</button>
+            <div className="page-links">
+                <button className="page-link" type="button">1</button>
             </div>
-            <a class="page-navi next" href="#">다음</a>
+            <button className="page-navi next" type="button">다음</button>
         </div>
     );
 }

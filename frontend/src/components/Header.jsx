@@ -2,14 +2,14 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../styles/Header.css'; // 추가
 
-function Header({ isLoggedIn, setIsLoggedIn, user }) {
+function Header({ isLoggedIn, user, onLogout }) {
   const location = useLocation();
   const isMainPage = location.pathname === "/";
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    if (onLogout) onLogout();
     localStorage.removeItem('token');
-    setIsLoggedIn(false);
     navigate('/login');
   };
 
@@ -36,6 +36,15 @@ function Header({ isLoggedIn, setIsLoggedIn, user }) {
         {isLoggedIn ? (
           <>
             <span>{user.nickname || user.username} 님</span>
+            {user.user_role === 'Admin' && (
+              <button
+                className="admin-btn"
+                style={{ marginLeft: '10px', marginRight: '5px' }}
+                onClick={() => navigate('/admin')}
+              >
+                관리
+              </button>
+            )}
             <button onClick={handleLogout} className='inLoggedIn' >로그아웃</button>
           </>
         ) : (

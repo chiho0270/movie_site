@@ -27,7 +27,7 @@ function Register() {
       return;
     }
     try {
-      const res = await fetch(`/api/check_id?username=${encodeURIComponent(username)}`);
+      const res = await fetch(`/api/auth/check_id?username=${encodeURIComponent(username)}`);
       const data = await res.json();
       if (data.isAvailable) {
         setIdMsg("사용 가능한 아이디입니다.");
@@ -63,7 +63,7 @@ function Register() {
       return;
     }
     try {
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

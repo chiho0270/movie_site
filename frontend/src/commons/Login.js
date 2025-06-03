@@ -19,11 +19,11 @@ import React from "react";
 import Header from "../components/Header";
 import Login from "../components/Login";
 
-function LoginPage() {
+function LoginPage({ onLoginSuccess, isLoggedIn, user }) {
   return (
     <>
-      <Header />
-      <Login />
+      <Header isLoggedIn={isLoggedIn} user={user} />
+      <Login onLoginSuccess={onLoginSuccess} />
     </>
   );
 }
