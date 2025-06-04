@@ -7,11 +7,12 @@ import CastSection from "../components/CastSection";
 import "../styles/MoviePage.css"; 
 import React, { useEffect, useState } from "react";
 
-function MoviePage() {
+function MoviePage({ isLoggedIn, user, onLogout }) {
     const { id } = useParams();
     const [movieData, setMovieData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [rating, setRating] = useState(5);
 
     useEffect(() => {
         setLoading(true);
@@ -36,12 +37,13 @@ function MoviePage() {
     if (loading) return <div>영화 정보를 불러오는 중...</div>;
     if (error || !movieData) return <div>DB에 저장되지 않은 영화이거나, 정보를 찾을 수 없습니다.</div>;
 
-    const isLoggedIn = true; // 테스트용
-    const userId = 1;
+    // 실제 로그인 정보와 user 객체 사용
+    const userId = user?.userId;
+    const user_role = user?.user_role || 'GeneralReviewer';
 
     return (
         <div>
-            <Header />
+            <Header isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
             <div className="movie-detail-container">
                 <div className="poster-and-info">
                     <PosterSection posterUrl={movieData.poster_url} />
@@ -53,6 +55,8 @@ function MoviePage() {
                                 userId={userId}
                                 movieId={movieData.movie_id}
                                 averageRating={movieData.average_rating ? movieData.average_rating / 2 : undefined}
+                                rating={rating}
+                                onChange={setRating}
                             />
                         </div>
                         <div className="comment-wrapper">
@@ -60,6 +64,8 @@ function MoviePage() {
                                 isLoggedIn={isLoggedIn}
                                 userId={userId}
                                 movieId={movieData.movie_id}
+                                user_role={user_role}
+                                rating={rating}
                             />
                         </div>
                         <div className="movie-info">

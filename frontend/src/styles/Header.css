@@ -35,12 +35,14 @@
   text-decoration: none;
 }
 .search-box {
-  position: absolute;
-  right: 180px;
   width: 250px;
   max-width: 100%;
   padding: 0.5rem;
   border-radius: 8px;
+  margin-left: 2rem; /* Add spacing from logo */
+  background: none;
+  display: flex;
+  align-items: center;
 }
 .search-box input {
   width: 100%;
@@ -86,6 +88,8 @@
   }
   .search-box {
     margin: 0 0 0.5rem 0;
+    width: 100%;
+    max-width: 100%;
   }
   .logo {
     font-size: 1.1rem;
@@ -105,6 +109,8 @@
   }
   .search-box {
     margin: 0 0 0.5rem 0;
+    width: 100%;
+    max-width: 100%;
   }
   .logo {
     font-size: 1.1rem;

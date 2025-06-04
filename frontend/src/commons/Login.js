@@ -19,10 +19,10 @@ import React from "react";
 import Header from "../components/Header";
 import Login from "../components/Login";
 
-function LoginPage({ onLoginSuccess, isLoggedIn, user }) {
+function LoginPage({ onLoginSuccess, isLoggedIn, user, onLogout }) {
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} user={user} />
+      <Header isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
       <Login onLoginSuccess={onLoginSuccess} />
     </>
   );

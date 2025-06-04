@@ -19,13 +19,8 @@ const MovieSection = ({movies}) => {
                     // 개봉일 우선순위: dbMovie > item.openDt > item.release_date
                     const releaseDate = movie.release_date || item.openDt || '';
                     if (!title) return null; // 제목 없는 항목은 스킵
-                    // 클릭 시 이동 경로 결정: movie_id > tmdb_id > movieCd
-                    let linkId = movie.movie_id || movie.tmdb_id || movie.movieCd;
-                    const handleClick = () => {
-                        if (linkId) navigate(`/movie/${linkId}`);
-                    };
                     return (
-                        <div key={movieId} className="movie-poster" onClick={handleClick} style={{ cursor: linkId ? 'pointer' : 'default' }}>
+                        <div key={movieId} className="movie-poster" onClick={() => movie.movie_id ? navigate(`/movie/${movie.movie_id}`) : null} style={{ cursor: movie.movie_id ? 'pointer' : 'default' }}>
                             <img
                                 src={posterUrl}
                                 alt={title}

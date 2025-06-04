@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import MovieSection from "../components/MovieSection";
+import MovieSearchSection from "../components/MovieSearchSection";
 import Header from "../components/Header";
 import '../App.css';
 
@@ -100,7 +100,7 @@ function SearchPage({ isLoggedIn, user, onLogout }) {
         <div className="search-top-area">
           {/* 영화 제목 입력칸과 검색 버튼 제거됨 */}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ marginRight: 10 }}>정렬:</span>
+            <span style={{ marginRight: 10 }}>       </span>
             <button onClick={() => setSortType('release')} style={{ marginRight: 6, fontWeight: sortType === 'release' ? 'bold' : 'normal' }}>최신순</button>
             <button onClick={() => setSortType('title')} style={{ fontWeight: sortType === 'title' ? 'bold' : 'normal' }}>글자순</button>
           </div>
@@ -124,10 +124,10 @@ function SearchPage({ isLoggedIn, user, onLogout }) {
         </div>
         {/* 목록 영역 */}
         <div className="search-list-area">
-          {tag && <h3>"{tag}" 태그로 검색된 영화</h3>}
-          {loading && <div>로딩 중...</div>}
+          {tag && <h3 style={{ color: '#fff' }}>&quot;{tag}&quot; 태그로 검색된 영화</h3>}
+          {loading && <div style={{ color: '#fff' }}>로딩 중...</div>}
           {error && <div style={{ color: '#ff6464' }}>{error}</div>}
-          <MovieSection movies={getSortedMovies()} />
+          <MovieSearchSection movies={getSortedMovies()} />
         </div>
       </div>
     </div>

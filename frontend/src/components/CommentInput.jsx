@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/CommentInput.css";
 
-function CommentInput({ isLoggedIn, username, movieId, userType }) {
+function CommentInput({ isLoggedIn, movieId, user_role, rating = 5 }) {
   const [comment, setComment] = useState("");
 
   const handleCommentSubmit = () => {
@@ -15,40 +15,34 @@ function CommentInput({ isLoggedIn, username, movieId, userType }) {
       return;
     }
 
-    fetch("/api/comment", {
+    const token = localStorage.getItem('token');
+    fetch("/api/review", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
       },
-      body: JSON.stringify({ username, movieId, comment }),
+      body: JSON.stringify({
+        movie_id: movieId,
+        comment,
+        rating, // 별점 UI에서 받은 값 사용
+        is_pro_review: user_role === 'ProReviewer'
+      }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("코멘트 저장 완료:", data);
-        setComment("");
-        // 사용자 등급에 따라 review 저장
-        if (userType === '일반' || userType === '전문가' || userType === '관리자') {
-          fetch("/api/review", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username,
-              movieId,
-              comment,
-              userType,
-              // 필요시 추가 필드
-            }),
-          })
-            .then((res) => res.json())
-            .then((reviewData) => {
-              console.log("리뷰 저장 완료:", reviewData);
-            })
-            .catch((err) => console.error("리뷰 저장 실패:", err));
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text);
         }
+        return res.json();
       })
-      .catch((err) => console.error("코멘트 저장 실패:", err));
+      .then((data) => {
+        alert("리뷰가 저장되었습니다.");
+        setComment("");
+      })
+      .catch((err) => {
+        alert("리뷰 저장에 실패했습니다. " + (err.message || err));
+      });
   };
 
   return (
@@ -61,7 +55,7 @@ function CommentInput({ isLoggedIn, username, movieId, userType }) {
       />
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <button
-          onClick={() => window.location.href = `/review/user?movieId=${movieId}`}
+          onClick={() => window.location.href = `/review?movieId=${movieId}`}
           style={{ background: '#e3f0ff', color: '#1976d2', border: '1px solid #90caf9', fontWeight: 600 }}
         >
           평론 보러가기

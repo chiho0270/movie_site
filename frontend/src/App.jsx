@@ -62,9 +62,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<MainPage isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
-        <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} isLoggedIn={isLoggedIn} user={user} />} />
+        <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
         <Route path="/register" element={<RegisterPage isLoggedIn={isLoggedIn} user={user} />} />
-        <Route path="/admin" element={<AdminPage isLoggedIn={isLoggedIn} user={user} />} />
+        <Route path="/admin" element={<AdminPage isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
         <Route path="/search" element={<SearchPage isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
         <Route path="/movie/:id" element={<MoviePage isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
         <Route path="/review" element={<ReviewPage isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/RatingInput.css";
 
-function RatingInput({ isLoggedIn, userId, movieId, averageRating }) {
-  const [selectedRating, setSelectedRating] = useState(0);
+function RatingInput({ isLoggedIn, userId, movieId, averageRating, rating, onChange }) {
+  const [selectedRating, setSelectedRating] = useState(rating || 0);
   const [hoverRating, setHoverRating] = useState(0);
   const navigate = useNavigate();
 
@@ -20,22 +20,25 @@ function RatingInput({ isLoggedIn, userId, movieId, averageRating }) {
     }
   }, [isLoggedIn, userId, movieId]);
 
+  useEffect(() => {
+    if (typeof rating === 'number') setSelectedRating(rating);
+  }, [rating]);
+
   const handleClick = (e, starIndex) => {
     if (!isLoggedIn) {
       navigate("/login");
       return;
     }
-
     const rect = e.currentTarget.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
-    const rating = offsetX < rect.width / 2 ? starIndex - 0.5 : starIndex;
-
-    setSelectedRating(rating);
+    const newRating = offsetX < rect.width / 2 ? starIndex - 0.5 : starIndex;
+    setSelectedRating(newRating);
+    if (onChange) onChange(newRating);
 
     fetch("/api/rating", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, movieId, rating }),
+      body: JSON.stringify({ userId, movieId, rating: newRating }),
     })
       .then((res) => res.json())
       .then((data) => console.log("별점 저장:", data))
